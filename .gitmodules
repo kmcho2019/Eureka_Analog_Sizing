@@ -1,3 +1,6 @@
 [submodule "submodules/gymnax_Analog_RL"]
 	path = submodules/gymnax_Analog_RL
 	url = https://github.com/kmcho2019/gymnax_Analog_RL.git
+[submodule "submodules/purejaxrl_Analog_RL"]
+	path = submodules/purejaxrl_Analog_RL
+	url = https://github.com/kmcho2019/purejaxrl_Analog_RL.git
