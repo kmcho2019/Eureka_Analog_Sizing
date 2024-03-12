@@ -346,12 +346,19 @@ class TwoStageOTA(environment.Environment):
             }
         )
 
+from typing import Tuple
+import jax.numpy as jnp
+def compute_ota_reward(
+    out0: float, out1: float, out2: float, out3: float, out4: float, 
+    out5: float, out6: float, out7: float, out8: float,
+    out0_constraints: Tuple[float, int], out1_constraints: Tuple[float, int], 
+    out2_constraints: Tuple[float, int], out3_constraints: Tuple[float, int], 
+    out4_constraints: Tuple[float, int], out5_constraints: Tuple[float, int], 
+    out6_constraints: Tuple[float, int], out7_constraints: Tuple[float, int],
+    w0: int, w1: int, w2: int, w3: float, w4: float, w5: float, 
+    w6: int, w7: int, w8: int
+) -> float:
 
-def compute_ota_reward(out0, out1, out2, out3, out4, out5, out6, out7, out8, 
-                       out0_constraints, out1_constraints, out2_constraints, 
-                       out3_constraints, out4_constraints, out5_constraints, 
-                       out6_constraints, out7_constraints,
-                       w0, w1, w2, w3, w4, w5, w6, w7, w8):
     out = jnp.array([out0, out1, out2, out3, out4, out5, out6, out7, out8])
     constraints = jnp.array([
         out0_constraints, out1_constraints, out2_constraints, out3_constraints, 

@@ -17,7 +17,7 @@ from utils.create_task import create_task
 from utils.extract_task_code import *
 
 EUREKA_ROOT_DIR = os.getcwd()
-ISAAC_ROOT_DIR = f"{EUREKA_ROOT_DIR}/../isaacgymenvs/isaacgymenvs"
+ISAAC_ROOT_DIR = f"{EUREKA_ROOT_DIR}/../submodules/gymnax_Analog_RL/gymnax/environments/custom" # f"{EUREKA_ROOT_DIR}/../isaacgymenvs/isaacgymenvs" # change to f"{EUREKA_ROOT_DIR}/../submodules/gymnax_Analog_RL/environments/custom"
 
 @hydra.main(config_path="cfg", config_name="config", version_base="1.1")
 def main(cfg):
@@ -36,13 +36,13 @@ def main(cfg):
     logging.info("Task description: " + task_description)
 
     env_name = cfg.env.env_name.lower()
-    env_parent = 'isaac' if f'{env_name}.py' in os.listdir(f'{EUREKA_ROOT_DIR}/envs/isaac') else 'dexterity'
-    task_file = f'{EUREKA_ROOT_DIR}/envs/{env_parent}/{env_name}.py'
-    task_obs_file = f'{EUREKA_ROOT_DIR}/envs/{env_parent}/{env_name}_obs.py'
+    env_parent = 'custom' #'isaac' if f'{env_name}.py' in os.listdir(f'{EUREKA_ROOT_DIR}/envs/isaac') else 'dexterity' # add custom to env_parent
+    task_file = f'{EUREKA_ROOT_DIR}/envs/{env_parent}/{env_name}.py'     # location of environment code
+    task_obs_file = f'{EUREKA_ROOT_DIR}/envs/{env_parent}/{env_name}_obs.py' # location of environment observation code
     shutil.copy(task_obs_file, f"env_init_obs.py")
     task_code_string  = file_to_string(task_file)
     task_obs_code_string  = file_to_string(task_obs_file)
-    output_file = f"{ISAAC_ROOT_DIR}/tasks/{env_name}{suffix.lower()}.py"
+    output_file = f"{ISAAC_ROOT_DIR}/{env_name}{suffix.lower()}.py" # f"{ISAAC_ROOT_DIR}/tasks/{env_name}{suffix.lower()}.py"
 
     # Loading all text prompts
     prompt_dir = f'{EUREKA_ROOT_DIR}/utils/prompts'
@@ -163,18 +163,24 @@ def main(cfg):
                 task_code_string_iter = task_code_string.replace("def compute_reward(self):", "def compute_reward(self):\n" + reward_signature)
             elif "def compute_reward(self, actions)" in task_code_string:
                 task_code_string_iter = task_code_string.replace("def compute_reward(self, actions):", "def compute_reward(self, actions):\n" + reward_signature)
+            elif "def compute_reward(self, model_output: chex.Array, params: EnvParams) -> float:" in task_code_string: # gymanx implementation unlike issacgym has functional programming elements so that it needs to receive model_output and params
+                task_code_string_iter = task_code_string.replace("def compute_reward(self, model_output: chex.Array, params: EnvParams) -> float:", "def compute_reward(self, model_output: chex.Array, params: EnvParams) -> float:\n" + reward_signature)
             else:
                 raise NotImplementedError
 
             # Save the new environment code when the output contains valid code string!
             with open(output_file, 'w') as file:
                 file.writelines(task_code_string_iter + '\n')
-                file.writelines("from typing import Tuple, Dict" + '\n')
-                file.writelines("import math" + '\n')
-                file.writelines("import torch" + '\n')
-                file.writelines("from torch import Tensor" + '\n')
-                if "@torch.jit.script" not in code_string:
-                    code_string = "@torch.jit.script\n" + code_string
+                file.writelines("from typing import Tuple" + '\n') # only Tuple used in compute_ota_reward function
+                file.writelines("import jax.numpy as jnp" + '\n')
+                # Rest of imports unnecessary for the reward function as it is from isaacgymenvs
+                #file.writelines("from typing import Tuple, Dict" + '\n')
+                #file.writelines("import math" + '\n')
+                #file.writelines("import torch" + '\n')
+                #file.writelines("from torch import Tensor" + '\n')
+                # torch.jit not used as this environment uses jax instead, compute_ota_reward is jit compiled through the step_env function
+                #if "@torch.jit.script" not in code_string:
+                #    code_string = "@torch.jit.script\n" + code_string
                 file.writelines(code_string + '\n')
 
             with open(f"env_iter{iter}_response{response_id}_rewardonly.py", 'w') as file:
