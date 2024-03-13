@@ -355,7 +355,7 @@ def compute_ota_reward(
     out2_constraints: Tuple[float, int], out3_constraints: Tuple[float, int], 
     out4_constraints: Tuple[float, int], out5_constraints: Tuple[float, int], 
     out6_constraints: Tuple[float, int], out7_constraints: Tuple[float, int],
-    w0: int, w1: int, w2: int, w3: float, w4: float, w5: float, 
+    w0: int, w1: int, w2: int, w3: int, w4: int, w5: int, 
     w6: int, w7: int, w8: int
 ) -> float:
 
