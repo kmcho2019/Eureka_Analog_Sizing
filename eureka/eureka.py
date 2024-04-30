@@ -4,7 +4,8 @@ import json
 import logging 
 import matplotlib.pyplot as plt
 import os
-import openai
+from openai import OpenAI
+
 import re
 import subprocess
 from pathlib import Path
@@ -20,7 +21,7 @@ EUREKA_ROOT_DIR = (os.getcwd())
 # current location is Eureka_Development/Eureka_Analog_Sizing/eureka while Eureka_Development/Eureka_Analog_Sizing is the root directory with the submodules that contain the environment code and the RL code
 ISAAC_ROOT_DIR = f"{os.path.dirname(EUREKA_ROOT_DIR)}/submodules/gymnax_Analog_RL/gymnax/environments/custom" # f"{EUREKA_ROOT_DIR}/../isaacgymenvs/isaacgymenvs" # change to f"{EUREKA_ROOT_DIR}/../submodules/gymnax_Analog_RL/environments/custom"
 PUREJAXRL_ROOT_DIR = f"{os.path.dirname(EUREKA_ROOT_DIR)}/../submodules/purejaxrl/purejaxrl"
-
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 @hydra.main(config_path="cfg", config_name="config", version_base="1.1")
 def main(cfg):
@@ -28,7 +29,6 @@ def main(cfg):
     logging.info(f"Workspace: {workspace_dir}")
     logging.info(f"Project Root: {EUREKA_ROOT_DIR}")
 
-    openai.api_key = os.getenv("OPENAI_API_KEY")
 
     task = cfg.env.task
     task_description = cfg.env.description
@@ -91,7 +91,7 @@ def main(cfg):
                 break
             for attempt in range(1000):
                 try:
-                    response_cur = openai.ChatCompletion.create(
+                    response_cur = client.chat.completions.create(
                         model=model,
                         messages=messages,
                         temperature=cfg.temperature,
@@ -109,11 +109,12 @@ def main(cfg):
                 logging.info("Code terminated due to too many failed attempts!")
                 exit()
 
-            responses.extend(response_cur["choices"])
-            prompt_tokens = response_cur["usage"]["prompt_tokens"]
-            total_completion_token += response_cur["usage"]["completion_tokens"]
-            total_token += response_cur["usage"]["total_tokens"]
+            responses.extend(response_cur.choices)
+            prompt_tokens = response_cur.usage.prompt_tokens
+            total_completion_token += response_cur.usage.completion_tokens
+            total_token += response_cur.usage.total_tokens
 
+        print(responses) # Debugging
         if cfg.sample == 1:
             logging.info(f"Iteration {iter}: GPT Output:\n " + responses[0]["message"]["content"] + "\n")
 
