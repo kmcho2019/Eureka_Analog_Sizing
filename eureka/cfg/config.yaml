@@ -1,6 +1,6 @@
 defaults:
   - _self_
-  - env: shadow_hand
+  - env: two_stage_ota
   - override hydra/launcher: local
   - override hydra/output: local
 

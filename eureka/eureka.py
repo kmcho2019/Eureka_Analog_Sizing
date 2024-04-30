@@ -16,8 +16,11 @@ from utils.file_utils import find_files_with_substring, load_tensorboard_logs
 from utils.create_task import create_task
 from utils.extract_task_code import *
 
-EUREKA_ROOT_DIR = os.getcwd()
-ISAAC_ROOT_DIR = f"{EUREKA_ROOT_DIR}/../submodules/gymnax_Analog_RL/gymnax/environments/custom" # f"{EUREKA_ROOT_DIR}/../isaacgymenvs/isaacgymenvs" # change to f"{EUREKA_ROOT_DIR}/../submodules/gymnax_Analog_RL/environments/custom"
+EUREKA_ROOT_DIR = (os.getcwd()) 
+# current location is Eureka_Development/Eureka_Analog_Sizing/eureka while Eureka_Development/Eureka_Analog_Sizing is the root directory with the submodules that contain the environment code and the RL code
+ISAAC_ROOT_DIR = f"{os.path.dirname(EUREKA_ROOT_DIR)}/submodules/gymnax_Analog_RL/gymnax/environments/custom" # f"{EUREKA_ROOT_DIR}/../isaacgymenvs/isaacgymenvs" # change to f"{EUREKA_ROOT_DIR}/../submodules/gymnax_Analog_RL/environments/custom"
+PUREJAXRL_ROOT_DIR = f"{os.path.dirname(EUREKA_ROOT_DIR)}/../submodules/purejaxrl/purejaxrl"
+
 
 @hydra.main(config_path="cfg", config_name="config", version_base="1.1")
 def main(cfg):
@@ -195,7 +198,7 @@ def main(cfg):
             # Execute the python file with flags
             rl_filepath = f"env_iter{iter}_response{response_id}.txt"
             with open(rl_filepath, 'w') as f:
-                process = subprocess.Popen(['python', '-u', f'{ISAAC_ROOT_DIR}/train.py',  
+                process = subprocess.Popen(['python', '-u', f'{PUREJAXRL_ROOT_DIR}/jax_train.py',  
                                             'hydra/output=subprocess',
                                             f'task={task}{suffix}', f'wandb_activate={cfg.use_wandb}',
                                             f'wandb_entity={cfg.wandb_username}', f'wandb_project={cfg.wandb_project}',
@@ -361,7 +364,7 @@ def main(cfg):
         # Execute the python file with flags
         rl_filepath = f"reward_code_eval{i}.txt"
         with open(rl_filepath, 'w') as f:
-            process = subprocess.Popen(['python', '-u', f'{ISAAC_ROOT_DIR}/train.py',  
+            process = subprocess.Popen(['python', '-u', f'{PUREJAXRL_ROOT_DIR}/jax_train.py',  
                                         'hydra/output=subprocess',
                                         f'task={task}{suffix}', f'wandb_activate={cfg.use_wandb}',
                                         f'wandb_entity={cfg.wandb_username}', f'wandb_project={cfg.wandb_project}',
