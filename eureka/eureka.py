@@ -73,7 +73,7 @@ def main(cfg):
     max_success_overall = DUMMY_FAILURE
     max_success_reward_correlation_overall = DUMMY_FAILURE
     max_reward_code_path = None 
-    
+    print("Debug 0: Initial System and User Messages")
     # Eureka generation loop
     for iter in range(cfg.iteration):
         # Get Eureka response
@@ -113,10 +113,9 @@ def main(cfg):
             prompt_tokens = response_cur.usage.prompt_tokens
             total_completion_token += response_cur.usage.completion_tokens
             total_token += response_cur.usage.total_tokens
-
-        print(responses) # Debugging
+        print('Debug 1: Eureka Response')
         if cfg.sample == 1:
-            logging.info(f"Iteration {iter}: GPT Output:\n " + responses[0]["message"]["content"] + "\n")
+            logging.info(f"Iteration {iter}: GPT Output:\n " + responses[0].message.content + "\n")
 
         # Logging Token Information
         logging.info(f"Iteration {iter}: Prompt Tokens: {prompt_tokens}, Completion Tokens: {total_completion_token}, Total Tokens: {total_token}")
@@ -124,7 +123,8 @@ def main(cfg):
         code_runs = [] 
         rl_runs = []
         for response_id in range(cfg.sample):
-            response_cur = responses[response_id]["message"]["content"]
+            print('Debug 2: Generated Code Processing')
+            response_cur = responses[response_id].message.content
             logging.info(f"Iteration {iter}: Processing Code Run {response_id}")
 
             # Regex patterns to extract python code enclosed in GPT response
@@ -157,12 +157,16 @@ def main(cfg):
 
             code_runs.append(code_string)
             reward_signature = [
-                f"self.rew_buf[:], self.rew_dict = {gpt_reward_signature}",
-                f"self.extras['gpt_reward'] = self.rew_buf.mean()",
-                f"for rew_state in self.rew_dict: self.extras[rew_state] = self.rew_dict[rew_state].mean()",
+                f"def compute_reward(self, model_output: chex.Array, params: EnvParams) -> float:",
+                f"    reward, self.rew_dict = compute_reward(*(self.reward_compute_input(model_output, params)))",
+                f"    return reward",
             ]
-            indent = " " * 8
-            reward_signature = "\n".join([indent + line for line in reward_signature])
+            indent = " " * 4
+            reward_signature = "".join([indent + line for line in reward_signature])
+            reward_fun_pattern = r"(def compute_reward\(self,.*?\) -> float:.*?)(?=\n\s+def|\n\s+\Z)"
+            # Replace the old compute_reward method with the new one
+            task_code_string_iter = re.sub(reward_fun_pattern, reward_signature.strip(), task_code_string, flags=re.DOTALL)
+            """
             if "def compute_reward(self)" in task_code_string:
                 task_code_string_iter = task_code_string.replace("def compute_reward(self):", "def compute_reward(self):\n" + reward_signature)
             elif "def compute_reward(self, actions)" in task_code_string:
@@ -171,6 +175,9 @@ def main(cfg):
                 task_code_string_iter = task_code_string.replace("def compute_reward(self, model_output: chex.Array, params: EnvParams) -> float:", "def compute_reward(self, model_output: chex.Array, params: EnvParams) -> float:\n" + reward_signature)
             else:
                 raise NotImplementedError
+            """
+
+
 
             # Save the new environment code when the output contains valid code string!
             with open(output_file, 'w') as file:
@@ -208,7 +215,7 @@ def main(cfg):
                                             stdout=f, stderr=f)
             block_until_training(rl_filepath, log_status=True, iter_num=iter, response_id=response_id)
             rl_runs.append(process)
-        
+        print('Debug 3: Gathering RL Training Results and Constructing Reward Reflection')
         # Gather RL training results and construct reward reflection
         code_feedbacks = []
         contents = []
@@ -316,7 +323,7 @@ def main(cfg):
 
         logging.info(f"Iteration {iter}: Max Success: {max_success}, Execute Rate: {execute_rate}, Max Success Reward Correlation: {max_success_reward_correlation}")
         logging.info(f"Iteration {iter}: Best Generation ID: {best_sample_idx}")
-        logging.info(f"Iteration {iter}: GPT Output Content:\n" +  responses[best_sample_idx]["message"]["content"] + "\n")
+        logging.info(f"Iteration {iter}: GPT Output Content:\n" +  responses[best_sample_idx].message.content + "\n")
         logging.info(f"Iteration {iter}: User Content:\n" + best_content + "\n")
             
         # Plot the success rate
@@ -338,11 +345,11 @@ def main(cfg):
         np.savez('summary.npz', max_successes=max_successes, execute_rates=execute_rates, best_code_paths=best_code_paths, max_successes_reward_correlation=max_successes_reward_correlation)
 
         if len(messages) == 2:
-            messages += [{"role": "assistant", "content": responses[best_sample_idx]["message"]["content"]}]
+            messages += [{"role": "assistant", "content": responses[best_sample_idx].message.content}]
             messages += [{"role": "user", "content": best_content}]
         else:
             assert len(messages) == 4
-            messages[-2] = {"role": "assistant", "content": responses[best_sample_idx]["message"]["content"]}
+            messages[-2] = {"role": "assistant", "content": responses[best_sample_idx].message.content}
             messages[-1] = {"role": "user", "content": best_content}
 
         # Save dictionary as JSON file

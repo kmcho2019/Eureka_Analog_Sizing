@@ -110,6 +110,9 @@ class TwoStageOTA(environment.Environment):
         # JIT compile the step_env method
         self.step_env = jax.jit(self.step_env, static_argnames='params')
 
+        # reward dictionary to accomodate eureka
+        self.rew_dict = {}
+
 
     def load_model_params(self):
         new_params = {
@@ -172,24 +175,8 @@ class TwoStageOTA(environment.Environment):
             x15=x15,
             time=current_state.time,
         )
-    
-    
-    def compute_reward(self, model_output: chex.Array, params: EnvParams) -> float:
-        # Uses FoM metric for reward
-        '''
-        # Denormalize the model output to compare against constraints
-        out0 = model_output[0] * jnp.sqrt(params.out0_denormalize[1]) + params.out0_denormalize[0]
-        out1 = model_output[1] * jnp.sqrt(params.out1_denormalize[1]) + params.out1_denormalize[0]
-        out2 = model_output[2] * jnp.sqrt(params.out2_denormalize[1]) + params.out2_denormalize[0]
-        out3 = model_output[3] * jnp.sqrt(params.out3_denormalize[1]) + params.out3_denormalize[0]
-        out4 = model_output[4] * jnp.sqrt(params.out4_denormalize[1]) + params.out4_denormalize[0]
-        out5 = model_output[5] * jnp.sqrt(params.out5_denormalize[1]) + params.out5_denormalize[0]
-        out6 = model_output[6] * jnp.sqrt(params.out6_denormalize[1]) + params.out6_denormalize[0]
-        out7 = model_output[7] * jnp.sqrt(params.out7_denormalize[1]) + params.out7_denormalize[0]
-        out8 = model_output[8] * jnp.sqrt(params.out8_denormalize[1]) + params.out8_denormalize[0]
-        '''
-        # Denormalize the model output to compare against constraints
-        # From [-1, 1] => [min, max]
+
+    def reward_compute_input(self, model_output: chex.Array, params: EnvParams) -> list:
         denormalize_params_min = jnp.array([
             params.out0_denormalize[0], params.out1_denormalize[0], params.out2_denormalize[0],
             params.out3_denormalize[0], params.out4_denormalize[0], params.out5_denormalize[0],
@@ -207,18 +194,16 @@ class TwoStageOTA(environment.Environment):
             params.out6_constraints, params.out7_constraints
         ])
         out = denormalize_params_min + (((model_output + 1.0) * (denormalize_params_max - denormalize_params_min)) / 2.0)
-        #out = model_output * jnp.sqrt(denormalize_params[:, 1]) + denormalize_params[:, 0]
-
-        reward = compute_ota_reward(
-            out[0], out[1], out[2], out[3], out[4], out[5], out[6], out[7], out[8],
+        reward_input = [out[0], out[1], out[2], out[3], out[4], out[5], out[6], out[7], out[8],
             constraints[0], constraints[1], constraints[2], constraints[3], constraints[4],
             constraints[5], constraints[6], constraints[7],
             self.weights[0], self.weights[1], self.weights[2], self.weights[3], self.weights[4],
-            self.weights[5], self.weights[6], self.weights[7], self.weights[8]
-        )
+            self.weights[5], self.weights[6], self.weights[7], self.weights[8]]
+        return reward_input
+    
+    def compute_reward(self, model_output: chex.Array, params: EnvParams) -> float:
+        reward, self.rew_dict = compute_ota_reward(*(self.reward_compute_input(model_output, params)))
         return reward
-
-
 
     def step_env(
         self,
