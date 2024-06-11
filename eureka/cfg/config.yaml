@@ -9,7 +9,7 @@ hydra:
     chdir: True
 
 # LLM parameters
-model: gpt-3.5 #gpt-4-0314  # LLM model (other options are gpt-4, gpt-4-0613, gpt-3.5-turbo-16k-0613)
+model: gpt-4o #gpt-4-turbo #gpt-4-0314  # LLM model (other options are gpt-4, gpt-4-0613, gpt-3.5-turbo-16k-0613)
 temperature: 1.0
 suffix: GPT  # suffix for generated files (indicates LLM model)
 

@@ -1,3 +1,18 @@
 task: TwoStageOTA
 env_name: two_stage_ota
-description: configure the gates of the two stage ota circuit to reduce power and satisfy constraints
+description: |
+  The ultimate goal is to configure the gates of the TwoStageOTA circuit (where 16 parameters from x0~x15 exists) to reduce power (pwr, represented by out8) and satisfy constraints for other performance metrics (ugf, pm, dc_gain, cmrr, psrr, os, upper_trig, lower_trig represented by out0 to out7) by configuring the reward function of RL. The signature of the reward function that must be implemented is as follows:
+  
+  def compute_reward(
+      out0: float, out1: float, out2: float, out3: float, out4: float, 
+      out5: float, out6: float, out7: float, out8: float,
+      out0_constraints: Tuple[float, int], out1_constraints: Tuple[float, int], 
+      out2_constraints: Tuple[float, int], out3_constraints: Tuple[float, int], 
+      out4_constraints: Tuple[float, int], out5_constraints: Tuple[float, int], 
+      out6_constraints: Tuple[float, int], out7_constraints: Tuple[float, int],
+      w0: int, w1: int, w2: int, w3: int, w4: int, w5: int, 
+      w6: int, w7: int, w8: int
+  ) -> Tuple[float, Dict]
+  
+  This function computes the reward by evaluating the output values of the TwoStageOTA circuit against their respective constraints. Each output (out0 to out8) is checked against its constraint, which is a tuple consisting of a constraint value and a direction. The direction determines if the constraint value is an upper bound (1) or a lower bound (0). The reward is calculated by scaling the differences from constraints, applying weights, and summing the weighted differences to compute a figure of merit (FoM). The negative of the FoM is returned as the reward to be minimized in the RL training in the original implementation, though different implementations may perform better. For the pwr (out8), lower values are always better. For other outputs, the direction of the constraint is determined by the 'direction' value in the constraint tuple: 0 indicates a lower bound and 1 indicates an upper bound.
+  The returned value is a tuple containing the reward and a dictionary of the components used in the reward calculation, for interpretation and debugging purposes.

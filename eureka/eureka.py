@@ -20,7 +20,7 @@ from utils.extract_task_code import *
 EUREKA_ROOT_DIR = (os.getcwd()) 
 # current location is Eureka_Development/Eureka_Analog_Sizing/eureka while Eureka_Development/Eureka_Analog_Sizing is the root directory with the submodules that contain the environment code and the RL code
 ISAAC_ROOT_DIR = f"{os.path.dirname(EUREKA_ROOT_DIR)}/submodules/gymnax_Analog_RL/gymnax/environments/custom" # f"{EUREKA_ROOT_DIR}/../isaacgymenvs/isaacgymenvs" # change to f"{EUREKA_ROOT_DIR}/../submodules/gymnax_Analog_RL/environments/custom"
-PUREJAXRL_ROOT_DIR = f"{os.path.dirname(EUREKA_ROOT_DIR)}/../submodules/purejaxrl/purejaxrl"
+PUREJAXRL_ROOT_DIR = f"{os.path.dirname(EUREKA_ROOT_DIR)}/submodules/purejaxrl_Analog_RL/purejaxrl"
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 @hydra.main(config_path="cfg", config_name="config", version_base="1.1")
@@ -153,13 +153,15 @@ def main(cfg):
                 gpt_reward_signature, input_lst = get_function_signature(code_string)
             except Exception as e:
                 logging.info(f"Iteration {iter}: Code Run {response_id} cannot parse function signature!")
+                print('Debug Full Response:\n', response_cur)
+                print('Debug Print Code String:\n', code_string)
                 continue
 
             code_runs.append(code_string)
             reward_signature = [
-                f"def compute_reward(self, model_output: chex.Array, params: EnvParams) -> float:",
-                f"    reward, self.rew_dict = compute_reward(*(self.reward_compute_input(model_output, params)))",
-                f"    return reward",
+                f"def compute_reward(self, model_output: chex.Array, params: EnvParams) -> float:\n",
+                f"    reward, self.rew_dict = compute_reward(*(self.reward_compute_input(model_output, params)))\n",
+                f"    return reward\n",
             ]
             indent = " " * 4
             reward_signature = "".join([indent + line for line in reward_signature])
@@ -182,7 +184,7 @@ def main(cfg):
             # Save the new environment code when the output contains valid code string!
             with open(output_file, 'w') as file:
                 file.writelines(task_code_string_iter + '\n')
-                file.writelines("from typing import Tuple" + '\n') # only Tuple used in compute_ota_reward function
+                file.writelines("from typing import Tuple, Dict" + '\n') # only Tuple used in compute_ota_reward function
                 file.writelines("import jax.numpy as jnp" + '\n')
                 # Rest of imports unnecessary for the reward function as it is from isaacgymenvs
                 #file.writelines("from typing import Tuple, Dict" + '\n')
@@ -202,7 +204,8 @@ def main(cfg):
 
             # Find the freest GPU to run GPU-accelerated RL
             set_freest_gpu()
-            
+
+            print('Debug 2.1: Running RL Training')            
             # Execute the python file with flags
             rl_filepath = f"env_iter{iter}_response{response_id}.txt"
             with open(rl_filepath, 'w') as f:
@@ -215,6 +218,7 @@ def main(cfg):
                                             stdout=f, stderr=f)
             block_until_training(rl_filepath, log_status=True, iter_num=iter, response_id=response_id)
             rl_runs.append(process)
+            print('Debug 2.2: RL Training Completed')
         print('Debug 3: Gathering RL Training Results and Constructing Reward Reflection')
         # Gather RL training results and construct reward reflection
         code_feedbacks = []
