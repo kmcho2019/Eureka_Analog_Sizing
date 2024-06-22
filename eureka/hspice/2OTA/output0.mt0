@@ -1,0 +1,10 @@
+$DATA1 SOURCE='HSPICE' VERSION='N-2017.12-SP2 linux64' PARAM_COUNT=0
+.TITLE '** generated for: hspiced'
+ vh               vl               os               upper           
+ init             upper_bound      lower_bound      upper_trig      
+ lower_trig       i_vdd            v_vdd            pwr             
+ temper           alter#          
+  1.794e+00        4.007e-01        1.394e+00        5.510e-01      
+  5.500e-01        5.511e-01        5.509e-01        8.495e-07      
+  8.543e-07       -8.427e-04        1.800e+00        1.517e-03      
+  2.500e+01       1               

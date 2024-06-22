@@ -40,6 +40,25 @@ def block_until_training(rl_filepath, log_status=False, iter_num=-1, response_id
             if log_status and "Traceback" in rl_log:
                 logging.info(f"Iteration {iter_num}: Code Run {response_id} execution error!")
             break
+        elif "Finished running jax_train.py" in rl_log: # Added this condition as we are using our own jax_train.py script
+            if log_status:
+                logging.info(f"Iteration {iter_num}: Code Run {response_id} finished running jax_train.py!")
+            break
+
+def block_until_sim(sim_filepath, log_status=False, iter_num=-1, response_id=-1):
+    # Ensure that the Hspice simulation has started before moving on
+    while True:
+        sim_log = file_to_string(sim_filepath)
+        if "fps step:" in sim_log or "Traceback" in sim_log:
+            if log_status and "fps step:" in sim_log:
+                logging.info(f"Iteration {iter_num}: Code Run {response_id} successfully training!")
+            if log_status and "Traceback" in sim_log:
+                logging.info(f"Iteration {iter_num}: Code Run {response_id} execution error!")
+            break
+        elif "Simulation completed and results saved to simulation_results.json" in sim_log: # Added this condition as we are using our own jax_train.py script
+            if log_status:
+                logging.info(f"Iteration {iter_num}: Code Run {response_id} finished running jax_train.py!")
+            break
 
 if __name__ == "__main__":
     print(get_freest_gpu())

@@ -1,0 +1,519 @@
+* We provide additional library for compact call of corner models to ease user's work.
+* User can find detailed information about how to use by referring to the example and
+* table on document.
+* The worst case corner combinations which are not listed in the table need manual
+* description by user's own hand.
+* 
+* Example: For all typical corner model call, specify the 'ttt' corner in netlist(or input)
+*          as like Ex 1 below.
+* 
+*  Ex. 1) use all typical models,
+* 
+*       .lib 'corner_HL18G.lib' ttt             @ Star-HSPICE
+*       include "corner_HL18G.scs" section=ttt   @ SPECTRE
+* 
+*  Ex. 2) use all Monte-Carlo global variation
+* 
+*       .lib 'corner_HL18G.lib' mc_global       @ Star-HSPICE
+*       include "corner_HL18G.scs" section=mc_global   @ SPECTRE
+*  Ex. 3) use all slow corner models at mismatching simulation
+* 
+*       .lib 'corner_HL18G.lib' sss_mis       @ Star-HSPICE
+*       include "corner_HL18G.scs" section=sss_mis   @ SPECTRE
+
+******************************************************************
+* corner library set for ttt simulation
+******************************************************************
+.lib ttt
+.lib 'HL18G-S3.7S.lib' tt_tn
+.lib 'HL18G-S3.7S.lib' tt_tn_na
+.lib 'HL18G-S3.7S.lib' tt_tk33
+.lib 'HL18G-S3.7S.lib' tt_tk33_na
+.lib 'HL18G-S3.7S.lib' tt_tk50
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-S3.7P.lib' bjt_typ
+.lib 'HL18G-S3.7P.lib' res_typ
+.lib 'HL18G-S3.7P.lib' cap_typ
+
+.include "HL18G-S3.7-MALIAS.lib"
+.endl ttt
+
+******************************************************************
+* corner library set for sss simulation
+******************************************************************
+.lib sss
+.lib 'HL18G-S3.7S.lib' ss_tn
+.lib 'HL18G-S3.7S.lib' ss_tn_na
+.lib 'HL18G-S3.7S.lib' ss_tk33
+.lib 'HL18G-S3.7S.lib' ss_tk33_na
+.lib 'HL18G-S3.7S.lib' ss_tk50
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-S3.7P.lib' bjt_slow
+.lib 'HL18G-S3.7P.lib' res_slow
+.lib 'HL18G-S3.7P.lib' cap_slow
+
+.include "HL18G-S3.7-MALIAS.lib"
+
+.endl sss
+
+******************************************************************
+* corner library set for fff simulation
+******************************************************************
+.lib fff
+.lib 'HL18G-S3.7S.lib' ff_tn
+.lib 'HL18G-S3.7S.lib' ff_tn_na
+.lib 'HL18G-S3.7S.lib' ff_tk33
+.lib 'HL18G-S3.7S.lib' ff_tk33_na
+.lib 'HL18G-S3.7S.lib' ff_tk50
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-S3.7P.lib' bjt_fast
+.lib 'HL18G-S3.7P.lib' res_fast
+.lib 'HL18G-S3.7P.lib' cap_fast
+
+.include "HL18G-S3.7-MALIAS.lib"
+
+.endl fff
+
+******************************************************************
+* corner library set for sft simulation
+******************************************************************
+.lib sft
+.lib 'HL18G-S3.7S.lib' sf_tn
+.lib 'HL18G-S3.7S.lib' sf_tn_na
+.lib 'HL18G-S3.7S.lib' sf_tk33
+.lib 'HL18G-S3.7S.lib' sf_tk33_na
+.lib 'HL18G-S3.7S.lib' sf_tk50
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-S3.7P.lib' bjt_typ
+.lib 'HL18G-S3.7P.lib' res_typ
+.lib 'HL18G-S3.7P.lib' cap_typ
+
+.include "HL18G-S3.7-MALIAS.lib"
+
+.endl sft
+
+******************************************************************
+* corner library set for fst simulation
+******************************************************************
+.lib fst
+.lib 'HL18G-S3.7S.lib' fs_tn
+.lib 'HL18G-S3.7S.lib' fs_tn_na
+.lib 'HL18G-S3.7S.lib' fs_tk33
+.lib 'HL18G-S3.7S.lib' fs_tk33_na
+.lib 'HL18G-S3.7S.lib' fs_tk50
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-S3.7P.lib' bjt_typ
+.lib 'HL18G-S3.7P.lib' res_typ
+.lib 'HL18G-S3.7P.lib' cap_typ
+
+.include "HL18G-S3.7-MALIAS.lib"
+
+.endl fst
+
+
+
+
+******************************************************************
+* corner library set for sfs simulation
+******************************************************************
+.lib sfs
+.lib 'HL18G-S3.7S.lib' sf_tn
+.lib 'HL18G-S3.7S.lib' sf_tn_na
+.lib 'HL18G-S3.7S.lib' sf_tk33
+.lib 'HL18G-S3.7S.lib' sf_tk33_na
+.lib 'HL18G-S3.7S.lib' sf_tk50
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-S3.7P.lib' bjt_slow
+.lib 'HL18G-S3.7P.lib' res_slow
+.lib 'HL18G-S3.7P.lib' cap_slow
+
+.include "HL18G-S3.7-MALIAS.lib"
+
+.endl sfs
+
+******************************************************************
+* corner library set for fss simulation
+******************************************************************
+.lib fss
+.lib 'HL18G-S3.7S.lib' fs_tn
+.lib 'HL18G-S3.7S.lib' fs_tn_na
+.lib 'HL18G-S3.7S.lib' fs_tk33
+.lib 'HL18G-S3.7S.lib' fs_tk33_na
+.lib 'HL18G-S3.7S.lib' fs_tk50
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-S3.7P.lib' bjt_slow
+.lib 'HL18G-S3.7P.lib' res_slow
+.lib 'HL18G-S3.7P.lib' cap_slow
+
+.include "HL18G-S3.7-MALIAS.lib"
+
+.endl fss
+
+******************************************************************
+* corner library set for sff simulation
+******************************************************************
+.lib sff
+.lib 'HL18G-S3.7S.lib' sf_tn
+.lib 'HL18G-S3.7S.lib' sf_tn_na
+.lib 'HL18G-S3.7S.lib' sf_tk33
+.lib 'HL18G-S3.7S.lib' sf_tk33_na
+.lib 'HL18G-S3.7S.lib' sf_tk50
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-S3.7P.lib' bjt_fast
+.lib 'HL18G-S3.7P.lib' res_fast
+.lib 'HL18G-S3.7P.lib' cap_fast
+
+.include "HL18G-S3.7-MALIAS.lib"
+
+.endl sff
+
+
+******************************************************************
+* corner library set for fsf simulation
+******************************************************************
+.lib fsf
+.lib 'HL18G-S3.7S.lib' fs_tn
+.lib 'HL18G-S3.7S.lib' fs_tn_na
+.lib 'HL18G-S3.7S.lib' fs_tk33
+.lib 'HL18G-S3.7S.lib' fs_tk33_na
+.lib 'HL18G-S3.7S.lib' fs_tk50
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-S3.7P.lib' bjt_fast
+.lib 'HL18G-S3.7P.lib' res_fast
+.lib 'HL18G-S3.7P.lib' cap_fast
+
+.include "HL18G-S3.7-MALIAS.lib"
+
+.endl fsf
+
+******************************************************************
+* corner library set for mix1 simulation
+******************************************************************
+.lib mix1
+.lib 'HL18G-S3.7S.lib' ss_tn
+.lib 'HL18G-S3.7S.lib' ss_tn_na
+.lib 'HL18G-S3.7S.lib' ss_tk33
+.lib 'HL18G-S3.7S.lib' ss_tk33_na
+.lib 'HL18G-S3.7S.lib' ss_tk50
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-S3.7P.lib' bjt_typ
+.lib 'HL18G-S3.7P.lib' res_typ
+.lib 'HL18G-S3.7P.lib' cap_typ
+
+.include "HL18G-S3.7-MALIAS.lib"
+
+.endl mix1
+
+
+******************************************************************
+* corner library set for mix2 simulation
+******************************************************************
+.lib mix2
+.lib 'HL18G-S3.7S.lib' ff_tn
+.lib 'HL18G-S3.7S.lib' ff_tn_na
+.lib 'HL18G-S3.7S.lib' ff_tk33
+.lib 'HL18G-S3.7S.lib' ff_tk33_na
+.lib 'HL18G-S3.7S.lib' ff_tk50
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-S3.7P.lib' bjt_typ
+.lib 'HL18G-S3.7P.lib' res_typ
+.lib 'HL18G-S3.7P.lib' cap_typ
+
+.include "HL18G-S3.7-MALIAS.lib"
+
+.endl mix2
+
+
+******************************************************************
+* corner library set for monte-carlo simulation (global only)
+******************************************************************
+.lib mc_global
+.lib 'HL18G-MC-S3.7S.lib' mc_global
+.lib 'HL18G-MC-S3.7P.lib' mc_global
+.lib 'HL18G-S3.7S.lib' diode
+.include "HL18G-S3.7-MALIAS.lib"
+.endl mc_global
+
+******************************************************************
+* corner library set for monte-carlo simulation (global + local)
+******************************************************************
+.lib mc_global_local
+.lib 'HL18G-MC-S3.7S.lib' mc_global_local
+.lib 'HL18G-MC-S3.7P.lib' mc_global_local
+.lib 'HL18G-S3.7S.lib' diode
+.include "HL18G-S3.7-MALIAS.lib"
+.endl mc_global_local
+
+******************************************************************
+* corner library set for ttt_mis simulation
+******************************************************************
+.lib ttt_mis
+.lib 'HL18G-MC-S3.7S.lib' tt_tn
+.lib 'HL18G-MC-S3.7S.lib' mc_tn_local
+.lib 'HL18G-MC-S3.7S.lib' tt_tk33
+.lib 'HL18G-MC-S3.7S.lib' mc_tk33_local
+.lib 'HL18G-MC-S3.7S.lib' tt_tk50
+.lib 'HL18G-MC-S3.7S.lib' mc_tk50_local
+.lib 'HL18G-S3.7S.lib' tt_tn_na
+.lib 'HL18G-S3.7S.lib' tt_tk33_na
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-MC-S3.7P.lib' res_typ
+.lib 'HL18G-MC-S3.7P.lib' mc_res_local
+.lib 'HL18G-MC-S3.7P.lib' cap_typ
+.lib 'HL18G-MC-S3.7P.lib' mc_cap_local
+.lib 'HL18G-S3.7P.lib' bjt_typ
+
+.include "HL18G-MC-S3.7-MALIAS.lib"
+
+.endl ttt_mis
+
+******************************************************************
+* corner library set for sss_mis simulation
+******************************************************************
+.lib sss_mis
+.lib 'HL18G-MC-S3.7S.lib' ss_tn
+.lib 'HL18G-MC-S3.7S.lib' mc_tn_local
+.lib 'HL18G-MC-S3.7S.lib' ss_tk33
+.lib 'HL18G-MC-S3.7S.lib' mc_tk33_local
+.lib 'HL18G-MC-S3.7S.lib' ss_tk50
+.lib 'HL18G-MC-S3.7S.lib' mc_tk50_local
+.lib 'HL18G-S3.7S.lib' ss_tn_na
+.lib 'HL18G-S3.7S.lib' ss_tk33_na
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-MC-S3.7P.lib' res_slow
+.lib 'HL18G-MC-S3.7P.lib' mc_res_local
+.lib 'HL18G-MC-S3.7P.lib' cap_slow
+.lib 'HL18G-MC-S3.7P.lib' mc_cap_local
+.lib 'HL18G-S3.7P.lib' bjt_slow
+
+.include "HL18G-MC-S3.7-MALIAS.lib"
+
+.endl sss_mis
+
+******************************************************************
+* corner library set for fff_mis simulation
+******************************************************************
+.lib fff_mis
+.lib 'HL18G-MC-S3.7S.lib' ff_tn
+.lib 'HL18G-MC-S3.7S.lib' mc_tn_local
+.lib 'HL18G-MC-S3.7S.lib' ff_tk33
+.lib 'HL18G-MC-S3.7S.lib' mc_tk33_local
+.lib 'HL18G-MC-S3.7S.lib' ff_tk50
+.lib 'HL18G-MC-S3.7S.lib' mc_tk50_local
+.lib 'HL18G-S3.7S.lib' ff_tn_na
+.lib 'HL18G-S3.7S.lib' ff_tk33_na
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-MC-S3.7P.lib' res_fast
+.lib 'HL18G-MC-S3.7P.lib' mc_res_local
+.lib 'HL18G-MC-S3.7P.lib' cap_fast
+.lib 'HL18G-MC-S3.7P.lib' mc_cap_local
+.lib 'HL18G-S3.7P.lib' bjt_fast
+
+.include "HL18G-MC-S3.7-MALIAS.lib"
+
+.endl fff_mis
+
+******************************************************************
+* corner library set for sft_mis simulation
+******************************************************************
+.lib sft_mis
+.lib 'HL18G-MC-S3.7S.lib' sf_tn
+.lib 'HL18G-MC-S3.7S.lib' mc_tn_local
+.lib 'HL18G-MC-S3.7S.lib' sf_tk33
+.lib 'HL18G-MC-S3.7S.lib' mc_tk33_local
+.lib 'HL18G-MC-S3.7S.lib' sf_tk50
+.lib 'HL18G-MC-S3.7S.lib' mc_tk50_local
+.lib 'HL18G-S3.7S.lib' sf_tn_na
+.lib 'HL18G-S3.7S.lib' sf_tk33_na
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-MC-S3.7P.lib' res_typ
+.lib 'HL18G-MC-S3.7P.lib' mc_res_local
+.lib 'HL18G-MC-S3.7P.lib' cap_typ
+.lib 'HL18G-MC-S3.7P.lib' mc_cap_local
+.lib 'HL18G-S3.7P.lib' bjt_typ
+
+.include "HL18G-MC-S3.7-MALIAS.lib"
+
+.endl sft_mis
+
+******************************************************************
+* corner library set for fst_mis simulation
+******************************************************************
+.lib fst_mis
+.lib 'HL18G-MC-S3.7S.lib' fs_tn
+.lib 'HL18G-MC-S3.7S.lib' mc_tn_local
+.lib 'HL18G-MC-S3.7S.lib' fs_tk33
+.lib 'HL18G-MC-S3.7S.lib' mc_tk33_local
+.lib 'HL18G-MC-S3.7S.lib' fs_tk50
+.lib 'HL18G-MC-S3.7S.lib' mc_tk50_local
+.lib 'HL18G-S3.7S.lib' fs_tn_na
+.lib 'HL18G-S3.7S.lib' fs_tk33_na
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-MC-S3.7P.lib' res_typ
+.lib 'HL18G-MC-S3.7P.lib' mc_res_local
+.lib 'HL18G-MC-S3.7P.lib' cap_typ
+.lib 'HL18G-MC-S3.7P.lib' mc_cap_local
+.lib 'HL18G-S3.7P.lib' bjt_typ
+
+.include "HL18G-MC-S3.7-MALIAS.lib"
+
+.endl fst_mis
+
+******************************************************************
+* corner library set for sfs_mis simulation
+******************************************************************
+.lib sfs_mis
+.lib 'HL18G-MC-S3.7S.lib' sf_tn
+.lib 'HL18G-MC-S3.7S.lib' mc_tn_local
+.lib 'HL18G-MC-S3.7S.lib' sf_tk33
+.lib 'HL18G-MC-S3.7S.lib' mc_tk33_local
+.lib 'HL18G-MC-S3.7S.lib' sf_tk50
+.lib 'HL18G-MC-S3.7S.lib' mc_tk50_local
+.lib 'HL18G-S3.7S.lib' sf_tn_na
+.lib 'HL18G-S3.7S.lib' sf_tk33_na
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-MC-S3.7P.lib' res_slow
+.lib 'HL18G-MC-S3.7P.lib' mc_res_local
+.lib 'HL18G-MC-S3.7P.lib' cap_slow
+.lib 'HL18G-MC-S3.7P.lib' mc_cap_local
+.lib 'HL18G-S3.7P.lib' bjt_slow
+
+.include "HL18G-MC-S3.7-MALIAS.lib"
+
+.endl sfs_mis
+
+******************************************************************
+* corner library set for fss_mis simulation
+******************************************************************
+.lib fss_mis
+.lib 'HL18G-MC-S3.7S.lib' fs_tn
+.lib 'HL18G-MC-S3.7S.lib' mc_tn_local
+.lib 'HL18G-MC-S3.7S.lib' fs_tk33
+.lib 'HL18G-MC-S3.7S.lib' mc_tk33_local
+.lib 'HL18G-MC-S3.7S.lib' fs_tk50
+.lib 'HL18G-MC-S3.7S.lib' mc_tk50_local
+.lib 'HL18G-S3.7S.lib' fs_tn_na
+.lib 'HL18G-S3.7S.lib' fs_tk33_na
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-MC-S3.7P.lib' res_slow
+.lib 'HL18G-MC-S3.7P.lib' mc_res_local
+.lib 'HL18G-MC-S3.7P.lib' cap_slow
+.lib 'HL18G-MC-S3.7P.lib' mc_cap_local
+.lib 'HL18G-S3.7P.lib' bjt_slow
+
+.include "HL18G-MC-S3.7-MALIAS.lib"
+
+.endl fss_mis
+
+******************************************************************
+* corner library set for sff_mis simulation
+******************************************************************
+.lib sff_mis
+.lib 'HL18G-MC-S3.7S.lib' sf_tn
+.lib 'HL18G-MC-S3.7S.lib' mc_tn_local
+.lib 'HL18G-MC-S3.7S.lib' sf_tk33
+.lib 'HL18G-MC-S3.7S.lib' mc_tk33_local
+.lib 'HL18G-MC-S3.7S.lib' sf_tk50
+.lib 'HL18G-MC-S3.7S.lib' mc_tk50_local
+.lib 'HL18G-S3.7S.lib' sf_tn_na
+.lib 'HL18G-S3.7S.lib' sf_tk33_na
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-MC-S3.7P.lib' res_fast
+.lib 'HL18G-MC-S3.7P.lib' mc_res_local
+.lib 'HL18G-MC-S3.7P.lib' cap_fast
+.lib 'HL18G-MC-S3.7P.lib' mc_cap_local
+.lib 'HL18G-S3.7P.lib' bjt_fast
+
+.include "HL18G-MC-S3.7-MALIAS.lib"
+
+.endl sff_mis
+
+******************************************************************
+* corner library set for fsf_mis simulation
+******************************************************************
+.lib fsf_mis
+.lib 'HL18G-MC-S3.7S.lib' fs_tn
+.lib 'HL18G-MC-S3.7S.lib' mc_tn_local
+.lib 'HL18G-MC-S3.7S.lib' fs_tk33
+.lib 'HL18G-MC-S3.7S.lib' mc_tk33_local
+.lib 'HL18G-MC-S3.7S.lib' fs_tk50
+.lib 'HL18G-MC-S3.7S.lib' mc_tk50_local
+.lib 'HL18G-S3.7S.lib' fs_tn_na
+.lib 'HL18G-S3.7S.lib' fs_tk33_na
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-MC-S3.7P.lib' res_fast
+.lib 'HL18G-MC-S3.7P.lib' mc_res_local
+.lib 'HL18G-MC-S3.7P.lib' cap_fast
+.lib 'HL18G-MC-S3.7P.lib' mc_cap_local
+.lib 'HL18G-S3.7P.lib' bjt_fast
+
+.include "HL18G-MC-S3.7-MALIAS.lib"
+
+.endl fsf_mis
+
+******************************************************************
+* corner library set for mix1_mis simulation
+******************************************************************
+.lib mix1_mis
+.lib 'HL18G-MC-S3.7S.lib' ss_tn
+.lib 'HL18G-MC-S3.7S.lib' mc_tn_local
+.lib 'HL18G-MC-S3.7S.lib' ss_tk33
+.lib 'HL18G-MC-S3.7S.lib' mc_tk33_local
+.lib 'HL18G-MC-S3.7S.lib' ss_tk50
+.lib 'HL18G-MC-S3.7S.lib' mc_tk50_local
+.lib 'HL18G-S3.7S.lib' ss_tn_na
+.lib 'HL18G-S3.7S.lib' ss_tk33_na
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-MC-S3.7P.lib' res_typ
+.lib 'HL18G-MC-S3.7P.lib' mc_res_local
+.lib 'HL18G-MC-S3.7P.lib' cap_typ
+.lib 'HL18G-MC-S3.7P.lib' mc_cap_local
+.lib 'HL18G-S3.7P.lib' bjt_typ
+
+.include "HL18G-MC-S3.7-MALIAS.lib"
+
+.endl mix1_mis
+******************************************************************
+* corner library set for mix2_mis simulation
+******************************************************************
+.lib mix2_mis
+.lib 'HL18G-MC-S3.7S.lib' ff_tn
+.lib 'HL18G-MC-S3.7S.lib' mc_tn_local
+.lib 'HL18G-MC-S3.7S.lib' ff_tk33
+.lib 'HL18G-MC-S3.7S.lib' mc_tk33_local
+.lib 'HL18G-MC-S3.7S.lib' ff_tk50
+.lib 'HL18G-MC-S3.7S.lib' mc_tk50_local
+.lib 'HL18G-S3.7S.lib' ss_tn_na
+.lib 'HL18G-S3.7S.lib' ss_tk33_na
+.lib 'HL18G-S3.7S.lib' diode
+
+.lib 'HL18G-MC-S3.7P.lib' res_typ
+.lib 'HL18G-MC-S3.7P.lib' mc_res_local
+.lib 'HL18G-MC-S3.7P.lib' cap_typ
+.lib 'HL18G-MC-S3.7P.lib' mc_cap_local
+.lib 'HL18G-S3.7P.lib' bjt_typ
+
+.include "HL18G-MC-S3.7-MALIAS.lib"
+
+.endl mix2_mis

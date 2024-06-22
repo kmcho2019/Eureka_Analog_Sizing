@@ -1,0 +1,721 @@
+$
+$******************************************************
+$****************     Monte-Carlo Model ***************
+$******************************************************
+
+$ FILE : HL18G-MC-SX.YP.lib
+
+*******************************************************************************
+* Monte-Carlo model(Global variation) for Resistor/BJT & MiM Capacitor
+*******************************************************************************
+
+.lib mc_global
+  .param
+ + rsh_rnd_s   = agauss(7.0000,    2.3333,     1)
+ + rsh_rpd_s   = agauss(6.0000,    1.9667,  1)
+ + rsh_rnpo_s   = agauss(6.0000,    1.9667,  1)
+ + rsh_rppo_s   = agauss(7.0000,    2.3333,     1)
+ + rsh_rnd_ns  = agauss(8.3000e+01,   4.0000,   1)
+ + rsh_rpd_ns  = agauss(1.2500e+02,  6.6667,  1)
+ + rsh_rnpo_ns  = agauss(4.8000e+02,  2.3333e+01, 1)
+ + rsh_rppo_ns  = agauss(3.0500e+02,  1.5000e+01,  1)
+ + rsh_rnwsti     = agauss(9.4000e+02,  6.6667e+01, 1)
+ + rsh_rhpo_ns = agauss(1.0000e+03,  8.3333e+01, 1)
+
+ + rsh_rjnd_s   = agauss(7.0000,    2.3333,     1)
+ + rsh_rjpd_s   = agauss(6.0000,    1.9667,  1)
+ + rsh_rdnpo_s   = agauss(6.0000,    1.9667,  1)
+ + rsh_rdppo_s   = agauss(7.0000,    2.3333,     1)
+ + rsh_rjnd_ns  = agauss(8.3000e+01,   4.0000,   1)
+ + rsh_rjpd_ns  = agauss(1.2500e+02,  6.6667,  1)
+ + rsh_rdnpo_ns  = agauss(4.8000e+02,  2.3333e+01, 1)
+ + rsh_rdppo_ns  = agauss(3.0500e+02,  1.5000e+01,  1)
+ + rsh_rjnwsti     = agauss(9.4000e+02,  6.6667e+01, 1)
+ + rsh_rdhpo_ns = agauss(1.0000e+03,  8.3333e+01, 1)
+
+ + ca_cmim1p1          = agauss(1.0326e-03, 5.16321e-05, 1)
+ + cp_cmim1p1          = agauss(2.9613e-10, 1.48063e-11, 1)
+
+ +           ca_cmim1p5 = agauss(   1.4715e-03,   7.3575e-05, 1 )
+ +           cp_cmim1p5 = agauss(   2.6387e-10,   1.3193e-11, 1 )
+ +           dw_cmim1p5 = agauss(   4.5000e-08,   2.2500e-09, 1 )
+ +           dl_cmim1p5 = agauss(   4.5000e-08,   2.2500e-09, 1 )
+
+ +           is_vp10tk = agauss(   1.4154e-17,   2.3590e-18, 1 )
+ +            is_vp5tk = agauss(   3.7780e-18,   6.2967e-19, 1 )
+ +            is_vp2tk = agauss(   7.4826e-19,   1.2471e-19, 1 )
+ +           is_vp10tn = agauss(   1.2985e-17,   2.1642e-18, 1 )
+ +            is_vp5tn = agauss(   3.6418e-18,   6.0697e-19, 1 )
+ +            is_vp2tn = agauss(   8.5027e-19,   1.4171e-19, 1 )
+
+ +           bf_vp10tk = agauss(   3.8420e+00,   1.7767e-01, 1 )
+ +            bf_vp5tk = agauss(   3.7120e+00,   2.1933e-01, 1 )
+ +            bf_vp2tk = agauss(   3.8490e+00,   2.7100e-01, 1 )
+ +           bf_vp10tn = agauss(   3.5530e+00,   2.0567e-01, 1 )
+ +            bf_vp5tn = agauss(   3.5080e+00,   2.8967e-01, 1 )
+ +            bf_vp2tn = agauss(   3.7880e+00,   5.8333e-01, 1 )
+
+ +          cjc_vp10tk = agauss(   7.1642e-14,   2.3881e-15, 1 )
+ +           cjc_vp5tk = agauss(   4.3050e-14,   1.4350e-15, 1 )
+ +           cjc_vp2tk = agauss(   2.8602e-14,   9.5340e-16, 1 )
+ +          cjc_vp10tn = agauss(   7.1642e-14,   2.3881e-15, 1 )
+ +           cjc_vp5tn = agauss(   4.3050e-14,   1.4350e-15, 1 )
+ +           cjc_vp2tn = agauss(   2.8602e-14,   9.5340e-16, 1 )
+
+ +          cje_vp10tk = agauss(   1.0063e-13,   3.3543e-15, 1 )
+ +           cje_vp5tk = agauss(   2.6404e-14,   8.8013e-16, 1 )
+ +           cje_vp2tk = agauss(   4.8232e-15,   1.6077e-16, 1 )
+ +          cje_vp10tn = agauss(   1.1543e-13,   3.8477e-15, 1 )
+ +           cje_vp5tn = agauss(   3.0749e-14,   1.0250e-15, 1 )
+ +           cje_vp2tn = agauss(   5.8272e-15,   1.9424e-16, 1 )
+
+ +           is_vn10tn = agauss(   3.2876e-17,   5.4794e-18, 1 )
+ +            is_vn5tn = agauss(   1.2684e-17,   2.1139e-18, 1 )
+ +            is_vn2tn = agauss(   1.7917e-18,   2.9861e-19, 1 )
+ +           is_vn10tk = agauss(   3.7522e-17,   6.2536e-18, 1 )
+ +            is_vn5tk = agauss(   1.0477e-17,   1.7461e-18, 1 )
+ +            is_vn2tk = agauss(   2.4097e-18,   4.0161e-19, 1 )
+
+ +           bf_vn10tn = agauss(   8.3900e+00,   4.6000e-01, 1 )
+ +            bf_vn5tn = agauss(   9.2400e+00,   4.7333e-01, 1 )
+ +            bf_vn2tn = agauss(   1.1500e+01,   6.6667e-01, 1 )
+ +           bf_vn10tk = agauss(   9.6000e+00,   3.8667e-01, 1 )
+ +            bf_vn5tk = agauss(   1.0200e+01,   4.7667e-01, 1 )
+ +            bf_vn2tk = agauss(   1.1700e+01,   5.1000e-01, 1 )
+
+ +          cjc_vn10tn = agauss(   2.1126e-13,   7.0420e-15, 1 )
+ +           cjc_vn5tn = agauss(   1.1086e-13,   3.6953e-15, 1 )
+ +           cjc_vn2tn = agauss(   6.5618e-14,   2.1873e-15, 1 )
+ +          cjc_vn10tk = agauss(   2.1126e-13,   7.0420e-15, 1 )
+ +           cjc_vn5tk = agauss(   1.1086e-13,   3.6953e-15, 1 )
+ +           cjc_vn2tk = agauss(   6.5618e-14,   2.1873e-15, 1 )
+
+ +          cje_vn10tn = agauss(   9.7293e-14,   3.2431e-15, 1 )
+ +           cje_vn5tn = agauss(   2.6033e-14,   8.6777e-16, 1 )
+ +           cje_vn2tn = agauss(   4.9857e-15,   1.6619e-16, 1 )
+ +          cje_vn10tk = agauss(   9.0711e-14,   3.0237e-15, 1 )
+ +           cje_vn5tk = agauss(   2.4599e-14,   8.1997e-16, 1 )
+ +           cje_vn2tk = agauss(   4.8583e-15,   1.6194e-16, 1 )
+
+.lib  'HL18G-S3.7P.lib' resistor
+.lib  'HL18G-S3.7P.lib' resistor_m
+.lib  'HL18G-S3.7P.lib' capacitor
+.lib  'HL18G-S3.7P.lib' bjt
+.endl mc_global
+
+*******************************************************************************
+* Monte-Carlo model(Both Global variation and Local variation)
+* for Resistor/BJT & MiM Capacitor
+*******************************************************************************
+
+.lib mc_global_local
+  .param
+ + rsh_rnd_s   = agauss(7.0000,    2.3333,     1)
+ + rsh_rpd_s   = agauss(6.0000,    1.9667,  1)
+ + rsh_rnpo_s   = agauss(6.0000,    1.9667,  1)
+ + rsh_rppo_s   = agauss(7.0000,    2.3333,     1)
+ + rsh_rnd_ns  = agauss(8.3000e+01,   4.0000,   1)
+ + rsh_rpd_ns  = agauss(1.2500e+02,  6.6667,  1)
+ + rsh_rnpo_ns  = agauss(4.8000e+02,  2.3333e+01, 1)
+ + rsh_rppo_ns  = agauss(3.0500e+02,  1.5000e+01,  1)
+ + rsh_rnwsti     = agauss(9.4000e+02,  6.6667e+01, 1)
+ + rsh_rhpo_ns = agauss(1.0000e+03,  8.3333e+01, 1)
+
+ + rsh_rjnd_s   = agauss(7.0000,    2.3333,     1)
+ + rsh_rjpd_s   = agauss(6.0000,    1.9667,  1)
+ + rsh_rdnpo_s   = agauss(6.0000,    1.9667,  1)
+ + rsh_rdppo_s   = agauss(7.0000,    2.3333,     1)
+ + rsh_rjnd_ns  = agauss(8.3000e+01,   4.0000,   1)
+ + rsh_rjpd_ns  = agauss(1.2500e+02,  6.6667,  1)
+ + rsh_rdnpo_ns  = agauss(4.8000e+02,  2.3333e+01, 1)
+ + rsh_rdppo_ns  = agauss(3.0500e+02,  1.5000e+01,  1)
+ + rsh_rjnwsti     = agauss(9.4000e+02,  6.6667e+01, 1)
+ + rsh_rdhpo_ns = agauss(1.0000e+03,  8.3333e+01, 1)
+
+ + ca_cmim1p1          = agauss(1.0326e-03, 5.16321e-05, 1)
+ + cp_cmim1p1          = agauss(2.9613e-10, 1.48063e-11, 1)
+
+ +           ca_cmim1p5 = agauss(   1.4715e-03,   7.3575e-05, 1 )
+ +           cp_cmim1p5 = agauss(   2.6387e-10,   1.3193e-11, 1 )
+ +           dw_cmim1p5 = agauss(   4.5000e-08,   2.2500e-09, 1 )
+ +           dl_cmim1p5 = agauss(   4.5000e-08,   2.2500e-09, 1 )
+
+ +           is_vp10tk = agauss(   1.4154e-17,   2.3590e-18, 1 )
+ +            is_vp5tk = agauss(   3.7780e-18,   6.2967e-19, 1 )
+ +            is_vp2tk = agauss(   7.4826e-19,   1.2471e-19, 1 )
+ +           is_vp10tn = agauss(   1.2985e-17,   2.1642e-18, 1 )
+ +            is_vp5tn = agauss(   3.6418e-18,   6.0697e-19, 1 )
+ +            is_vp2tn = agauss(   8.5027e-19,   1.4171e-19, 1 )
+
+ +           bf_vp10tk = agauss(   3.8420e+00,   1.7767e-01, 1 )
+ +            bf_vp5tk = agauss(   3.7120e+00,   2.1933e-01, 1 )
+ +            bf_vp2tk = agauss(   3.8490e+00,   2.7100e-01, 1 )
+ +           bf_vp10tn = agauss(   3.5530e+00,   2.0567e-01, 1 )
+ +            bf_vp5tn = agauss(   3.5080e+00,   2.8967e-01, 1 )
+ +            bf_vp2tn = agauss(   3.7880e+00,   5.8333e-01, 1 )
+
+ +          cjc_vp10tk = agauss(   7.1642e-14,   2.3881e-15, 1 )
+ +           cjc_vp5tk = agauss(   4.3050e-14,   1.4350e-15, 1 )
+ +           cjc_vp2tk = agauss(   2.8602e-14,   9.5340e-16, 1 )
+ +          cjc_vp10tn = agauss(   7.1642e-14,   2.3881e-15, 1 )
+ +           cjc_vp5tn = agauss(   4.3050e-14,   1.4350e-15, 1 )
+ +           cjc_vp2tn = agauss(   2.8602e-14,   9.5340e-16, 1 )
+
+ +          cje_vp10tk = agauss(   1.0063e-13,   3.3543e-15, 1 )
+ +           cje_vp5tk = agauss(   2.6404e-14,   8.8013e-16, 1 )
+ +           cje_vp2tk = agauss(   4.8232e-15,   1.6077e-16, 1 )
+ +          cje_vp10tn = agauss(   1.1543e-13,   3.8477e-15, 1 )
+ +           cje_vp5tn = agauss(   3.0749e-14,   1.0250e-15, 1 )
+ +           cje_vp2tn = agauss(   5.8272e-15,   1.9424e-16, 1 )
+
+ +           is_vn10tn = agauss(   3.2876e-17,   5.4794e-18, 1 )
+ +            is_vn5tn = agauss(   1.2684e-17,   2.1139e-18, 1 )
+ +            is_vn2tn = agauss(   1.7917e-18,   2.9861e-19, 1 )
+ +           is_vn10tk = agauss(   3.7522e-17,   6.2536e-18, 1 )
+ +            is_vn5tk = agauss(   1.0477e-17,   1.7461e-18, 1 )
+ +            is_vn2tk = agauss(   2.4097e-18,   4.0161e-19, 1 )
+
+ +           bf_vn10tn = agauss(   8.3900e+00,   4.6000e-01, 1 )
+ +            bf_vn5tn = agauss(   9.2400e+00,   4.7333e-01, 1 )
+ +            bf_vn2tn = agauss(   1.1500e+01,   6.6667e-01, 1 )
+ +           bf_vn10tk = agauss(   9.6000e+00,   3.8667e-01, 1 )
+ +            bf_vn5tk = agauss(   1.0200e+01,   4.7667e-01, 1 )
+ +            bf_vn2tk = agauss(   1.1700e+01,   5.1000e-01, 1 )
+
+ +          cjc_vn10tn = agauss(   2.1126e-13,   7.0420e-15, 1 )
+ +           cjc_vn5tn = agauss(   1.1086e-13,   3.6953e-15, 1 )
+ +           cjc_vn2tn = agauss(   6.5618e-14,   2.1873e-15, 1 )
+ +          cjc_vn10tk = agauss(   2.1126e-13,   7.0420e-15, 1 )
+ +           cjc_vn5tk = agauss(   1.1086e-13,   3.6953e-15, 1 )
+ +           cjc_vn2tk = agauss(   6.5618e-14,   2.1873e-15, 1 )
+
+ +          cje_vn10tn = agauss(   9.7293e-14,   3.2431e-15, 1 )
+ +           cje_vn5tn = agauss(   2.6033e-14,   8.6777e-16, 1 )
+ +           cje_vn2tn = agauss(   4.9857e-15,   1.6619e-16, 1 )
+ +          cje_vn10tk = agauss(   9.0711e-14,   3.0237e-15, 1 )
+ +           cje_vn5tk = agauss(   2.4599e-14,   8.1997e-16, 1 )
+ +           cje_vn2tk = agauss(   4.8583e-15,   1.6194e-16, 1 )
+
+.lib  'HL18G-MC-S3.7P.lib' mc_res_local
+.lib  'HL18G-MC-S3.7P.lib' mc_cap_local
+.lib  'HL18G-S3.7P.lib' bjt
+.endl mc_global_local
+
+
+****************************************************************************
+* Monte-Carlo model(Local variation) for Resistor
+****************************************************************************
+.lib mc_res_local
+ .param
+ + rsh_rnd_ns_mis      =  agauss( 0, 1, 1 )  rsh_rpd_ns_mis      =  agauss( 0, 1, 1 )
+ + rsh_rnpo_ns_mis     =  agauss( 0, 1, 1 )  rsh_rppo_ns_mis     =  agauss( 0, 1, 1 )
+ + rsh_rhpo_ns_mis     =  agauss( 0, 1, 1 )
+
+ + rsh_rjnd_ns_mis      =  agauss( 0, 1, 1 )  rsh_rjpd_ns_mis      =  agauss( 0, 1, 1 )
+ + rsh_rdnpo_ns_mis     =  agauss( 0, 1, 1 )  rsh_rdppo_ns_mis     =  agauss( 0, 1, 1 )
+ + rsh_rdhpo_ns_mis     =  agauss( 0, 1, 1 )
+$  .lib  'HL18G-MC-S3.7P.lib' mc_resistor
+.endl mc_res_local
+
+****************************************************************************
+* Monte-Carlo model(Local variation) for Capacitor
+****************************************************************************
+.lib mc_cap_local
+ .param
+ + ca_cmim1p1_mis      =  agauss( 0, 1, 1 )
+ + ca_cmim1p5_mis      =  agauss( 0, 1, 1 )
+$  .lib  'HL18G-MC-S3.7P.lib' mc_capacitor
+.endl mc_cap_local
+
+****************************
+* Corner models for Resistor
+****************************
+
+.lib  res_typ
+  .param
++ rsh_rnd_s  = 7       rsh_rpd_s  = 6       rsh_rnpo_s   = 6
++ rsh_rppo_s  = 7       rsh_rnd_ns = 83      rsh_rpd_ns  = 125
++ rsh_rnpo_ns = 480     rsh_rppo_ns = 305     rsh_rnwsti = 940
++ rsh_rhpo_ns = 1000
++ rsh_rjnd_s  = 7       rsh_rjpd_s  = 6       rsh_rdnpo_s   = 6
++ rsh_rdppo_s  = 7       rsh_rjnd_ns = 83      rsh_rjpd_ns  = 125
++ rsh_rdnpo_ns = 480     rsh_rdppo_ns = 305     rsh_rjnwsti = 940
++ rsh_rdhpo_ns = 1000
+  .lib 'HL18G-MC-S3.7P.lib' mc_resistor
+.endl  res_typ
+
+.lib res_fast
+  .param
++ rsh_rnd_s  = 2     rsh_rpd_s  = 1     rsh_rnpo_s   = 1
++ rsh_rppo_s  = 2     rsh_rnd_ns = 71      rsh_rpd_ns  = 105
++ rsh_rnpo_ns = 410     rsh_rppo_ns = 260     rsh_rnwsti = 740
++ rsh_rhpo_ns = 750
++ rsh_rjnd_s  = 2     rsh_rjpd_s  = 1     rsh_rdnpo_s   = 1
++ rsh_rdppo_s  = 2     rsh_rjnd_ns = 71      rsh_rjpd_ns  = 105
++ rsh_rdnpo_ns = 410     rsh_rdppo_ns = 260     rsh_rjnwsti = 740
++ rsh_rdhpo_ns = 750
+  .lib 'HL18G-MC-S3.7P.lib' mc_resistor
+.endl res_fast
+
+.lib res_slow
+  .param
++ rsh_rnd_s  = 12      rsh_rpd_s  = 11      rsh_rnpo_s   = 11
++ rsh_rppo_s  = 12      rsh_rnd_ns = 95      rsh_rpd_ns  = 145
++ rsh_rnpo_ns = 550     rsh_rppo_ns = 350     rsh_rnwsti = 1140
++ rsh_rhpo_ns = 1250
++ rsh_rjnd_s  = 12       rsh_rjpd_s  = 11      rsh_rdnpo_s   = 11
++ rsh_rdppo_s  = 12      rsh_rjnd_ns = 95      rsh_rjpd_ns  = 145
++ rsh_rdnpo_ns = 550     rsh_rdppo_ns = 350    rsh_rjnwsti = 1140
++ rsh_rdhpo_ns = 1250
+  .lib 'HL18G-MC-S3.7P.lib' mc_resistor
+.endl res_slow
+
+*********************************
+* Corner models for MIM capacitor
+* : 1.8V/3.3V part
+*********************************
+*
+.lib cap_typ
+ .param
++ ca_cmim1p1=1.0326e-03    cp_cmim1p1=2.9613e-10
+ +           ca_cmim1p5 =  1.4715e-03
+ +           cp_cmim1p5 =  2.6387e-10
+ +           dw_cmim1p5 =  4.5000e-08
+ +           dl_cmim1p5 =  4.5000e-08
+ .lib 'HL18G-MC-S3.7P.lib' mc_capacitor
+.endl cap_typ
+
+.lib cap_fast
+ .param
++ ca_cmim1p1=8.7774e-04    cp_cmim1p1=2.5171e-10
+ +           ca_cmim1p5 = ' 1.4715e-03 *  8.5000e-01'
+ +           cp_cmim1p5 = ' 2.6387e-10 *  8.5000e-01'
+ +           dw_cmim1p5 = ' 4.5000e-08 +  6.7500e-09'
+ +           dl_cmim1p5 = ' 4.5000e-08 +  6.7500e-09'
+ .lib 'HL18G-MC-S3.7P.lib' mc_capacitor
+.endl cap_fast
+
+.lib cap_slow
+ .param
++ ca_cmim1p1=1.1875e-03    cp_cmim1p1=3.4055e-10
+ +            ca_cmim1p5 = ' 1.4715e-03 *  1.1500e+00'
+ +            cp_cmim1p5 = ' 2.6387e-10 *  1.1500e+00'
+ +            dw_cmim1p5 = ' 4.5000e-08 -  6.7500e-09'
+ +            dl_cmim1p5 = ' 4.5000e-08 -  6.7500e-09'
+ .lib 'HL18G-MC-S3.7P.lib' mc_capacitor
+.endl cap_slow
+
+********************************************************************************
+
+.lib mc_resistor
+
+********************************************************************************
+*                     N+ DIFF. (NON SALICIDE) RESISTOR MODEL                   *
+********************************************************************************
+.subckt rnd_ns n1 n2 l=length w=width
+.param
++ dw=-2.5000E-08 dl=-4.82E-07
++ mcmode= 1 mult= 1 nb_of_segment= 1
++ mult_r   = mult
++ nbs      = nb_of_segment
++ leff = '(l/nbs) '
++ weff = '(w-(2*dw)) '
++ area     = '1E-12/(weff*leff)'
++ rsh_a    = ' (2.44/100) * (2.44/100) / 2 '
++ rsh_b    = 0
++ rsh_mc   = '(mcmode != 1) ? 1 : (1+rsh_rnd_ns_mis*sqrt((rsh_a*area+rsh_b)/(2*mult_r)))'
++ rsh      = ' rsh_rnd_ns * rsh_mc '
++ ptc1= 1.6210e-03 ptc2=-8.9320e-06
++ pvc1= 6.9413e-03 pvc2= 4.8436e-04
++ pt= 'temper' tfac= '1.0+ptc1*(pt-25)+ptc2*(pt-25)*(pt-25)'
+r n1 n2 'rsh*(l-2*dl)/(w-2*dw)*(1+pvc1*v(n1,n2)+pvc2*v(n1,n2)*v(n1,n2))*tfac'
+.ends rnd_ns
+********************************************************************************
+*                     P+ DIFF. (NON SALICIDE) RESISTOR MODEL                   *
+********************************************************************************
+.subckt rpd_ns n1 n2 l=length w=width
+.param
++ dw=-3.1000E-08 dl=-6.87E-07
++ mcmode= 1 mult= 1 nb_of_segment= 1
++ mult_r   = mult
++ nbs      = nb_of_segment
++ leff = '(l/nbs) '
++ weff = '(w-(2*dw)) '
++ area     = '1E-12/(weff*leff)'
++ rsh_a    = ' (2.54/100) * (2.54/100) / 2 '
++ rsh_b    = 0
++ rsh_mc   = '(mcmode != 1) ? 1 : (1+rsh_rpd_ns_mis*sqrt((rsh_a*area+rsh_b)/(2*mult_r)))'
++ rsh      = ' rsh_rpd_ns * rsh_mc '
++ ptc1= 1.4598E-03 ptc2= 7.3860E-07
++ pvc1=-1.2132E-03 pvc2= 1.6007E-02
++ pt= 'temper' tfac= '1.0+ptc1*(pt-25)+ptc2*(pt-25)*(pt-25)'
+r n1 n2 'rsh*(l-2*dl)/(w-2*dw)*(1+pvc1*v(n1,n2)+pvc2*v(n1,n2)*v(n1,n2))*tfac'
+.ends rpd_ns
+********************************************************************************
+*                       N POLY (NON SALICIDE) RESISTOR MODEL                   *
+********************************************************************************
+.subckt rnpo_ns n1 n2 l=length w=width
+.param
++ dw=1.5000E-08 dl=-3.4E-08
++ mcmode= 1 mult= 1 nb_of_segment= 1
++ mult_r   = mult
++ nbs      = nb_of_segment
++ leff = '(l/nbs) '
++ weff = '(w-(2*dw)) '
++ area     = '1E-12/(weff*leff)'
++ rsh_a    = ' (2.59/100) * (2.59/100) / 2 '
++ rsh_b    = 0
++ rsh_mc   = '(mcmode != 1) ? 1 : (1+rsh_rnpo_ns_mis*sqrt((rsh_a*area+rsh_b)/(2*mult_r))) '
++ rsh      = ' rsh_rnpo_ns * rsh_mc '
++ ptc1=-1.7195E-03 ptc2= 3.3868E-06
++ pvc1= 3.5661E-03 pvc2=-1.9642E-03
++ pt='temper' tfac='1.0+ptc1*(pt-25)+ptc2*(pt-25)*(pt-25)'
+r n1 n2 'rsh*(l-2*dl)/(w-2*dw)*(1+pvc1*v(n1,n2)+pvc2*v(n1,n2)*v(n1,n2))*tfac'
+.ends rnpo_ns
+********************************************************************************
+*                     P POLY (NON SALICIDE) RESISTOR MODEL                     *
+********************************************************************************
+.subckt rppo_ns n1 n2 l=length w=width
+.param
++ dw=2.0000e-08 dl=-5.75E-07
++ mcmode= 1 mult= 1 nb_of_segment= 1
++ mult_r   = mult
++ nbs      = nb_of_segment
++ leff = '(l/nbs) '
++ weff = '(w-(2*dw)) '
++ area     = '1E-12/(weff*leff)'
++ rsh_a    = ' (2.28/100) * (2.28/100) / 2 '
++ rsh_b    = 0
++ rsh_mc   = '(mcmode != 1) ? 1 : (1+rsh_rppo_ns_mis*sqrt((rsh_a*area+rsh_b)/(2*mult_r))) '
++ rsh      = ' rsh_rppo_ns * rsh_mc '
++ ptc1=-1.3268e-04 ptc2= 8.5122e-07
++ pvc1=-1.8084e-04 pvc2=-1.4359e-05
++ pt= 'temper' tfac= '1.0+ptc1*(pt-25)+ptc2*(pt-25)*(pt-25)'
+r n1 n2 'rsh*(l-2*dl)/(w-2*dw)*(1+pvc1*v(n1,n2)+pvc2*v(n1,n2)*v(n1,n2))*tfac'
+.ends rppo_ns
+********************************************************************************
+*                       HR P poly RESISTOR MODEL                               *
+********************************************************************************
+.subckt rhpo_ns n1 n2 l=length w=width
+.param
++ dw=4.3388e-08 dl=0.0E+00
++ mcmode= 1 mult= 1 nb_of_segment= 1
++ mult_r   = mult
++ nbs      = nb_of_segment
++ leff = '(l/nbs) '
++ weff = '(w-(2*dw)) '
++ area     = '1E-12/(weff*leff)'
++ rsh_a    = ' (2.37/100) * (2.37/100) / 2 '
++ rsh_b    = 0
++ rsh_mc   = '(mcmode != 1) ? 1 : (1+rsh_rhpo_ns_mis*sqrt((rsh_a*area+rsh_b)/(2*mult_r))) '
++ rsh      = ' rsh_rhpo_ns * rsh_mc '
++ ptc1=-1.065e-03 ptc2= 2.200e-06
++ pvc1=-6.275e-05 pvc2=-1.091e-04
++ pt='temper' tfac='1.0+ptc1*(pt-25)+ptc2*(pt-25)*(pt-25)'
+r n1 n2 'rsh*(l-2*dl)/(w-2*dw)*(1+pvc1*v(n1,n2)+pvc2*v(n1,n2)*v(n1,n2))*tfac'
+.ends rhpo_ns
+********************************************************************************
+*                     N+ DIFF. (SALICIDE) RESISTOR MODEL                       *
+********************************************************************************
+.subckt rnd_s n1 n2 l=length w=width
+.param rsh= rsh_rnd_s dw=1.5622e-08 dl=0.0
++ mcmode= 1 mult= 1 nb_of_segment= 1
++ ptc1= 3.3176e-03 ptc2= 1.0064e-07
++ pvc1= 2.8310e-05 pvc2= 2.4244e-03
++ pt= 'temper' tfac= '1.0+ptc1*(pt-25)+ptc2*(pt-25)*(pt-25)'
+r n1 n2 'rsh*(l-2*dl)/(w-2*dw)*(1+pvc1*v(n1,n2)+pvc2*v(n1,n2)*v(n1,n2))*tfac'
+.ends rnd_s
+********************************************************************************
+*                     P+ DIFF. (SALICIDE) RESISTOR MODEL                       *
+********************************************************************************
+.subckt rpd_s n1 n2 l=length w=width
+.param rsh= rsh_rpd_s dw=-2.8358e-09 dl=0.0
++ mcmode= 1 mult= 1 nb_of_segment= 1
++ ptc1= 3.4829e-03 ptc2= 1.8859e-07
++ pvc1= 2.9246e-07 pvc2= 2.7429e-03
++ pt= 'temper' tfac= '1.0+ptc1*(pt-25)+ptc2*(pt-25)*(pt-25)'
+r n1 n2 'rsh*(l-2*dl)/(w-2*dw)*(1+pvc1*v(n1,n2)+pvc2*v(n1,n2)*v(n1,n2))*tfac'
+.ends rpd_s
+********************************************************************************
+*                       N POLY (SALICIDE) RESISTOR MODEL                       *
+********************************************************************************
+.subckt rnpo_s n1 n2 l=length w=width
+.param rsh= rsh_rnpo_s dw=8.1915e-09 dl=0.0
++ mcmode= 1 mult= 1 nb_of_segment= 1
++ ptc1= 3.2061e-03 ptc2=-2.7864e-07
++ pvc1= 9.4035e-06 pvc2= 1.2403e-02
++ pt= 'temper' tfac= '1.0+ptc1*(pt-25)+ptc2*(pt-25)*(pt-25)'
+r n1 n2 'rsh*(l-2*dl)/(w-2*dw)*(1+pvc1*v(n1,n2)+pvc2*v(n1,n2)*v(n1,n2))*tfac'
+.ends rnpo_s
+********************************************************************************
+*                       P POLY (SALICIDE) RESISTOR MODEL                       *
+********************************************************************************
+.subckt rppo_s n1 n2 l=length w=width
+.param rsh= rsh_rppo_s dw=9.2263e-09 dl=0.0
++ mcmode= 1 mult= 1 nb_of_segment= 1
++ ptc1= 3.3504e-03 ptc2= 1.4203e-07
++ pvc1= 1.6541e-06 pvc2= 1.3179e-02
++ pt= 'temper' tfac= '1.0+ptc1*(pt-25)+ptc2*(pt-25)*(pt-25)'
+r n1 n2 'rsh*(l-2*dl)/(w-2*dw)*(1+pvc1*v(n1,n2)+pvc2*v(n1,n2)*v(n1,n2))*tfac'
+.ends rppo_s
+********************************************************************************
+*                       NWELL (UNDER STI) RESISTOR MODEL                       *
+********************************************************************************
+.subckt rnwsti n1 n2 l=length w=width
+.param rsh= rsh_rnwsti dw=3.0000e-07 dl=-3.1E-07
++ mcmode= 1 mult= 1 nb_of_segment= 1
++ ptc1= 3.9892e-03 ptc2= 8.2762e-06
++ pvc1= 1.3567e-02 pvc2=-6.0116e-04
++ pt= 'temper' tfac= '1.0+ptc1*(pt-25)+ptc2*(pt-25)*(pt-25)'
+r n1 n2 'rsh*(l-2*dl)/(w-2*dw)*(1+pvc1*v(n1,n2)+pvc2*v(n1,n2)*v(n1,n2))*tfac'
+.ends rnwsti
+
+
+********************************************************************************
+*                     N+ DIFF. (NON SALICIDE) RESISTOR MODEL                   *
+********************************************************************************
+.subckt rjnd_ns n1 n2 body l=length w=width
+.param
++ dw=-2.5000E-08 dl=-4.82E-07
++ mcmode= 1 mult= 1 nb_of_segment= 1
++ mult_r   = mult
++ nbs      = nb_of_segment
++ leff = '(l/nbs) '
++ weff = '(w-(2*dw)) '
++ area     = '1E-12/(weff*leff)'
++ rsh_a    = ' (2.44/100) * (2.44/100) / 2 '
++ rsh_b    = 0
++ rsh_mc   = '(mcmode != 1) ? 1 : (1+rsh_rjnd_ns_mis*sqrt((rsh_a*area+rsh_b)/(2*mult_r)))'
++ rsh      = ' rsh_rjnd_ns * rsh_mc '
++ ptc1= 1.6210e-03 ptc2=-8.9320e-06
++ pvc1= 6.9413e-03 pvc2= 4.8436e-04
++ pt= 'temper' tfac= '1.0+ptc1*(pt-25)+ptc2*(pt-25)*(pt-25)'
+r n1 n2 'rsh*(l-2*dl)/(w-2*dw)*(1+pvc1*v(n1,n2)+pvc2*v(n1,n2)*v(n1,n2))*tfac'
+d1 body n1 ndio_tn area='(w-2*dw)*(l-2*dl)/2' pj='((w-2*dw)+2.0*(l-2*dl)/2.0)'
+d2 body n2 ndio_tn area='(w-2*dw)*(l-2*dl)/2' pj='((w-2*dw)+2.0*(l-2*dl)/2.0)'
+.lib  'HL18G-S3.7S.lib' diode
+.ends rjnd_ns
+********************************************************************************
+*                     P+ DIFF. (NON SALICIDE) RESISTOR MODEL                   *
+********************************************************************************
+.subckt rjpd_ns n1 n2 body l=length w=width
+.param
++ dw=-3.1000E-08 dl=-6.87E-07
++ mcmode= 1 mult= 1 nb_of_segment= 1
++ mult_r   = mult
++ nbs      = nb_of_segment
++ leff = '(l/nbs) '
++ weff = '(w-(2*dw)) '
++ area     = '1E-12/(weff*leff)'
++ rsh_a    = ' (2.54/100) * (2.54/100) / 2 '
++ rsh_b    = 0
++ rsh_mc   = '(mcmode != 1) ? 1 : (1+rsh_rjpd_ns_mis*sqrt((rsh_a*area+rsh_b)/(2*mult_r)))'
++ rsh      = ' rsh_rjpd_ns * rsh_mc '
++ ptc1= 1.4598E-03 ptc2= 7.3860E-07
++ pvc1=-1.2132E-03 pvc2= 1.6007E-02
++ pt= 'temper' tfac= '1.0+ptc1*(pt-25)+ptc2*(pt-25)*(pt-25)'
+r n1 n2 'rsh*(l-2*dl)/(w-2*dw)*(1+pvc1*v(n1,n2)+pvc2*v(n1,n2)*v(n1,n2))*tfac'
+d1 n1 body pdio_tn area='(w-2*dw)*(l-2*dl)/2' pj='((w-2*dw)+2.0*(l-2*dl)/2.0)'
+d2 n2 body pdio_tn area='(w-2*dw)*(l-2*dl)/2' pj='((w-2*dw)+2.0*(l-2*dl)/2.0)'
+.lib  'HL18G-S3.7S.lib' diode
+.ends rjpd_ns
+********************************************************************************
+*                       N POLY (NON SALICIDE) RESISTOR MODEL                   *
+********************************************************************************
+.subckt rdnpo_ns n1 n2 body l=length w=width
+.param
++ dw=1.5000E-08 dl=-3.4E-08
++ mcmode= 1 mult= 1 nb_of_segment= 1
++ mult_r   = mult
++ nbs      = nb_of_segment
++ leff = '(l/nbs) '
++ weff = '(w-(2*dw)) '
++ area     = '1E-12/(weff*leff)'
++ rsh_a    = ' (2.59/100) * (2.59/100) / 2 '
++ rsh_b    = 0
++ rsh_mc   = '(mcmode != 1) ? 1 : (1+rsh_rdnpo_ns_mis*sqrt((rsh_a*area+rsh_b)/(2*mult_r))) '
++ rsh      = ' rsh_rdnpo_ns * rsh_mc '
++ ptc1=-1.7195E-03 ptc2= 3.3868E-06
++ pvc1= 3.5661E-03 pvc2=-1.9642E-03
++ pt='temper' tfac='1.0+ptc1*(pt-25)+ptc2*(pt-25)*(pt-25)'
+r n1 n2 'rsh*(l-2*dl)/(w-2*dw)*(1+pvc1*v(n1,n2)+pvc2*v(n1,n2)*v(n1,n2))*tfac'
+c1 n1 body ' 0.10372e-15*(w-2*dw)*(l-2*dl)/2*1e+12 + ((l-2*dl)+(w-2*dw))*0.04117e-15*1e+6'
+c2 n2 body ' 0.10372e-15*(w-2*dw)*(l-2*dl)/2*1e+12 + ((l-2*dl)+(w-2*dw))*0.04117e-15*1e+6'
+.ends rdnpo_ns
+********************************************************************************
+*                     P POLY (NON SALICIDE) RESISTOR MODEL                     *
+********************************************************************************
+.subckt rdppo_ns n1 n2 body l=length w=width
+.param
++ dw=2.0000e-08 dl=-5.75E-07
++ mcmode= 1 mult= 1 nb_of_segment= 1
++ mult_r   = mult
++ nbs      = nb_of_segment
++ leff = '(l/nbs) '
++ weff = '(w-(2*dw)) '
++ area     = '1E-12/(weff*leff)'
++ rsh_a    = ' (2.28/100) * (2.28/100) / 2 '
++ rsh_b    = 0
++ rsh_mc   = '(mcmode != 1) ? 1 : (1+rsh_rdppo_ns_mis*sqrt((rsh_a*area+rsh_b)/(2*mult_r))) '
++ rsh      = ' rsh_rdppo_ns * rsh_mc '
++ ptc1=-1.3268e-04 ptc2= 8.5122e-07
++ pvc1=-1.8084e-04 pvc2=-1.4359e-05
++ pt= 'temper' tfac= '1.0+ptc1*(pt-25)+ptc2*(pt-25)*(pt-25)'
+r n1 n2 'rsh*(l-2*dl)/(w-2*dw)*(1+pvc1*v(n1,n2)+pvc2*v(n1,n2)*v(n1,n2))*tfac'
+c1 n1 body ' 0.10372e-15*(w-2*dw)*(l-2*dl)/2*1e+12 + ((l-2*dl)+(w-2*dw))*0.04117e-15*1e+6'
+c2 n2 body ' 0.10372e-15*(w-2*dw)*(l-2*dl)/2*1e+12 + ((l-2*dl)+(w-2*dw))*0.04117e-15*1e+6'
+.ends rdppo_ns
+********************************************************************************
+*                       HR P poly RESISTOR MODEL                               *
+********************************************************************************
+.subckt rdhpo_ns n1 n2 body l=length w=width
+.param
++ dw=4.3388e-08 dl=0.0E+00
++ mcmode= 1 mult= 1 nb_of_segment= 1
++ mult_r   = mult
++ nbs      = nb_of_segment
++ leff = '(l/nbs) '
++ weff = '(w-(2*dw)) '
++ area     = '1E-12/(weff*leff)'
++ rsh_a    = ' (2.37/100) * (2.37/100) / 2 '
++ rsh_b    = 0
++ rsh_mc   = '(mcmode != 1) ? 1 : (1+rsh_rdhpo_ns_mis*sqrt((rsh_a*area+rsh_b)/(2*mult_r))) '
++ rsh      = ' rsh_rdhpo_ns * rsh_mc '
++ ptc1=-1.065e-03 ptc2= 2.200e-06
++ pvc1=-6.275e-05 pvc2=-1.091e-04
++ pt='temper' tfac='1.0+ptc1*(pt-25)+ptc2*(pt-25)*(pt-25)'
+r n1 n2 'rsh*(l-2*dl)/(w-2*dw)*(1+pvc1*v(n1,n2)+pvc2*v(n1,n2)*v(n1,n2))*tfac'
+c1 n1 body ' 0.10372e-15*(w-2*dw)*(l-2*dl)/2*1e+12 + ((l-2*dl)+(w-2*dw))*0.04117e-15*1e+6'
+c2 n2 body ' 0.10372e-15*(w-2*dw)*(l-2*dl)/2*1e+12 + ((l-2*dl)+(w-2*dw))*0.04117e-15*1e+6'
+.ends rdhpo_ns
+********************************************************************************
+*                     N+ DIFF. (SALICIDE) RESISTOR MODEL                       *
+********************************************************************************
+.subckt rjnd_s n1 n2 body l=length w=width
+.param rsh= rsh_rjnd_s dw=1.5622e-08 dl=0.0
++ mcmode= 1 mult= 1 nb_of_segment= 1
++ nbs      = nb_of_segment
++ ptc1= 3.3176e-03 ptc2= 1.0064e-07
++ pvc1= 2.8310e-05 pvc2= 2.4244e-03
++ pt= 'temper' tfac= '1.0+ptc1*(pt-25)+ptc2*(pt-25)*(pt-25)'
+r n1 n2 'rsh*(l-2*dl)/(w-2*dw)*(1+pvc1*v(n1,n2)+pvc2*v(n1,n2)*v(n1,n2))*tfac'
+d1 body n1 ndio_tn area='(w-2*dw)*(l-2*dl)/2' pj='((w-2*dw)+2.0*(l-2*dl)/2.0)'
+d2 body n2 ndio_tn area='(w-2*dw)*(l-2*dl)/2' pj='((w-2*dw)+2.0*(l-2*dl)/2.0)'
+.lib  'HL18G-S3.7S.lib' diode
+.ends rjnd_s
+********************************************************************************
+*                     P+ DIFF. (SALICIDE) RESISTOR MODEL                       *
+********************************************************************************
+.subckt rjpd_s n1 n2 body l=length w=width
+.param rsh= rsh_rjpd_s dw=-2.8358e-09 dl=0.0
++ mcmode= 1 mult= 1 nb_of_segment= 1
++ ptc1= 3.4829e-03 ptc2= 1.8859e-07
++ pvc1= 2.9246e-07 pvc2= 2.7429e-03
++ pt= 'temper' tfac= '1.0+ptc1*(pt-25)+ptc2*(pt-25)*(pt-25)'
+r n1 n2 'rsh*(l-2*dl)/(w-2*dw)*(1+pvc1*v(n1,n2)+pvc2*v(n1,n2)*v(n1,n2))*tfac'
+d1 n1 body pdio_tn area='(w-2*dw)*(l-2*dl)/2' pj='((w-2*dw)+2.0*(l-2*dl)/2.0)'
+d2 n2 body pdio_tn area='(w-2*dw)*(l-2*dl)/2' pj='((w-2*dw)+2.0*(l-2*dl)/2.0)'
+.lib  'HL18G-S3.7S.lib' diode
+.ends rjpd_s
+********************************************************************************
+*                       N POLY (SALICIDE) RESISTOR MODEL                       *
+********************************************************************************
+.subckt rdnpo_s n1 n2 body l=length w=width
+.param rsh= rsh_rdnpo_s dw=8.1915e-09 dl=0.0
++ mcmode= 1 mult= 1 nb_of_segment= 1
++ ptc1= 3.2061e-03 ptc2=-2.7864e-07
++ pvc1= 9.4035e-06 pvc2= 1.2403e-02
++ pt= 'temper' tfac= '1.0+ptc1*(pt-25)+ptc2*(pt-25)*(pt-25)'
+r n1 n2 'rsh*(l-2*dl)/(w-2*dw)*(1+pvc1*v(n1,n2)+pvc2*v(n1,n2)*v(n1,n2))*tfac'
+c1 n1 body ' 0.10372e-15*(w-2*dw)*(l-2*dl)/2*1e+12 + ((l-2*dl)+(w-2*dw))*0.04117e-15*1e+6'
+c2 n2 body ' 0.10372e-15*(w-2*dw)*(l-2*dl)/2*1e+12 + ((l-2*dl)+(w-2*dw))*0.04117e-15*1e+6'
+.ends rdnpo_s
+********************************************************************************
+*                       P POLY (SALICIDE) RESISTOR MODEL                       *
+********************************************************************************
+.subckt rdppo_s n1 n2 body l=length w=width
+.param rsh= rsh_rdppo_s dw=9.2263e-09 dl=0.0
++ mcmode= 1 mult= 1 nb_of_segment= 1
++ ptc1= 3.3504e-03 ptc2= 1.4203e-07
++ pvc1= 1.6541e-06 pvc2= 1.3179e-02
++ pt= 'temper' tfac= '1.0+ptc1*(pt-25)+ptc2*(pt-25)*(pt-25)'
+r n1 n2 'rsh*(l-2*dl)/(w-2*dw)*(1+pvc1*v(n1,n2)+pvc2*v(n1,n2)*v(n1,n2))*tfac'
+c1 n1 body ' 0.10372e-15*(w-2*dw)*(l-2*dl)/2*1e+12 + ((l-2*dl)+(w-2*dw))*0.04117e-15*1e+6'
+c2 n2 body ' 0.10372e-15*(w-2*dw)*(l-2*dl)/2*1e+12 + ((l-2*dl)+(w-2*dw))*0.04117e-15*1e+6'
+.ends rdppo_s
+********************************************************************************
+*                       NWELL (UNDER STI) RESISTOR MODEL                       *
+********************************************************************************
+.subckt rjnwsti n1 n2 body l=length w=width
+.param rsh= rsh_rjnwsti dw=3.0000e-07 dl=-3.1E-07
++ mcmode= 1 mult= 1 nb_of_segment= 1
++ ptc1= 3.9892e-03 ptc2= 8.2762e-06
++ pvc1= 1.3567e-02 pvc2=-6.0116e-04
++ pt= 'temper' tfac= '1.0+ptc1*(pt-25)+ptc2*(pt-25)*(pt-25)'
+r n1 n2 'rsh*(l-2*dl)/(w-2*dw)*(1+pvc1*v(n1,n2)+pvc2*v(n1,n2)*v(n1,n2))*tfac'
+d1 body n1 nwdio area='(w-2*dw)*(l-2*dl)/2' pj='((w-2*dw)+2.0*(l-2*dl)/2.0)'
+d2 body n2 nwdio area='(w-2*dw)*(l-2*dl)/2' pj='((w-2*dw)+2.0*(l-2*dl)/2.0)'
+.lib  'HL18G-S3.7S.lib' diode
+.ends rjnwsti
+
+.endl mc_resistor
+
+.lib mc_capacitor
+
+**************Capacitor Model****************************************
+**   Process:
+**   C(T) = C0*( 1 + TCC1*(T-25) + TCC2*(T-25)*(T-25) )
+**   C(T) = C0*( 1 + VCC1*V + VCC2*V*V )
+**   C0   = (Ca*AREA) + (Cp*PERI)
+**   AREA = (W-2*DW) * (L-2*DL), PERI = 2 * [(W-2*DW) + (L-2*DL)]
+*********************************************************************
+.subckt cmim1p1 n1 n2 area=1p peri=1u w=1u l=1u
+.param
++ mcmode= 1 entrymode= 1 mult= 1
++ dw= 0.0000e+00  dl= 0.0000e+00
++ mult_c     = mult
++ leff_cmim1p1     = ' l - (2*dl) '
++ weff_cmim1p1     = ' w - (2*dw) '
++ area_c     = ' 1E-12/(weff_cmim1p1 * leff_cmim1p1) '
++ ca_a     = ' (1.49/100) * (1.49/100) '
++ ca_b     = 0
++ ca_mc    = '(mcmode != 1) ? 1 : (1+ca_cmim1p1_mis*sqrt((ca_a*area_c+ca_b)/(2*mult_c))) '
++ ca= ' ca_cmim1p1 * ca_mc '
++ cp= ' cp_cmim1p1 '
++ tc1c= 2.5452e-05    tc2c= 1.9445e-08
++ vc1c=-6.0000e-06    vc2c= 3.4166e-06
++ pt= 'temper' tfac= '1+tc1c*(pt-25.0)+tc2c*(pt-25)*(pt-25)'
++ root_set= '(peri*peri-16*area>0) ? peri*peri-16*area : 0'
++ ld= '(entrymode != -1) ? l : (peri+sqrt(root_set))/4'
++ wd= '(entrymode != -1) ? w : area/ld'
++ area_eff= 'wd*ld' peri_eff= '2*(wd+ld)'
+c n1 n2 '(ca*area_eff + cp*peri_eff)*(1+vc1c*v(n1, n2)+vc2c*v(n1, n2)*v(n1, n2))*tfac'
+.ends cmim1p1
+
+.subckt cmim1p5 pos neg area=1p peri=1u w=1u l=1u
+.param
++ mcmode= 1 entrymode= 1 mult= 1
++ dw= 'dw_cmim1p5' dl= 'dl_cmim1p5'
++ mult_c     = mult
++ leff_cmim1p5     = ' l - (2*dl) '
++ weff_cmim1p5     = ' w - (2*dw) '
++ area_c     = ' 1E-12/(weff_cmim1p5 * leff_cmim1p5) '
++ ca_a     = ' (1.2690/100) * (1.2690/100) '
++ ca_b     = 0
++ ca_mc    = '(mcmode != 1) ? 1 : (1+ca_cmim1p5_mis*sqrt((ca_a*area_c+ca_b)/(2*mult_c))) '
++ ca= ' ca_cmim1p5 * ca_mc '
++ cp= ' cp_cmim1p5 '
++ tc1c= 1.5922e-05    tc2c=-1.8026e-09
++ vc1c= 3.8118e-06    vc2c= 1.5263e-05
++ pt= 'temper' tfac= '1+tc1c*(pt-25.0)+tc2c*(pt-25)*(pt-25)'
++ root_set= '(peri*peri-16*area>0) ? peri*peri-16*area : 0'
++ ld= '(entrymode != -1) ? l : (peri+sqrt(root_set))/4'
++ wd= '(entrymode != -1) ? w : area/ld'
++ area_eff= '(wd - 2 * dw) * (ld - 2 * dl)'
++ peri_eff= '2 * ((wd - 2 * dw) + (ld - 2 * dl))'
+c pos neg '(ca*area_eff + cp*peri_eff)*(1+vc1c*v(pos, neg)+vc2c*v(pos, neg)*v(pos, neg))*tfac'
+.ends cmim1p5
+
+.endl mc_capacitor
+
+********************************************************************************

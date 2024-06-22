@@ -1,0 +1,64 @@
+header
+"PSFversion" "1.00"
+"simulator" "HSPICE"
+"version" "N-2017.12-SP2 linux64"
+"rundate" "23:39:37 06/22/2024 "
+"runtitle" "** generated for: hspiced                                         "
+"runtype" "logFile"
+TYPE
+"analysisInst" STRUCT(
+"analysisType" STRING *
+"dataFile" STRING *
+"format" STRING *
+"parent" STRING *
+"sweepVariable" ARRAY ( * ) STRING *
+"description" STRING * )
+VALUE
+"opBegin" "analysisInst" ( 
+"Operating Point"
+"output0.op0"
+"PSF"
+""
+()
+"Operating Point"
+)
+"frequencySweep" "analysisInst" ( 
+"AC Analysis"
+"output0.ac0"
+"PSF"
+""
+()
+"AC Analysis"
+)
+"noise-noise" "analysisInst" ( 
+"noise"
+"output0.ns0"
+"PSF"
+""
+()
+"noise"
+)
+"timeSweep" "analysisInst" ( 
+"Transient Analysis"
+"output0.tr0"
+"PSF"
+""
+()
+"Transient Analysis"
+)
+"opEnd" "analysisInst" ( 
+"Operating Point"
+"output0.op0@1e-06"
+"PSF"
+""
+()
+"Operating Point"
+)
+"summary" "analysisInst" ( 
+"Summary Information"
+"output0.su0"
+"PSF"
+""
+()
+"Summary Information"
+)

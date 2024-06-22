@@ -1,0 +1,21 @@
+HEADER
+"PSFversion" "1.00"
+"simulator" "HSPICE"
+"version" "N-2017.12-SP2 linux64"
+"rundate" "23:39:37 06/22/2024"
+"runtitle" "** generated for: hspiced                                                       "
+"runtype" "Summary Information"
+"op point time" "0.16"
+"op point iterations" "633"
+"ac time" "0.07"
+"ac iterations" "111"
+"transient time" "0.07"
+"transient iterations" "560"
+"total cpu time" "0.49"
+"node value" "complete"
+"operating point" "invalid"
+"ac analysis" "complete"
+"dc sweep" "invalid"
+"transient analysis" "complete"
+TRAILER
+END

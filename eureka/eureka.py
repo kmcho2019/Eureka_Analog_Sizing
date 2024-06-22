@@ -11,16 +11,19 @@ import subprocess
 from pathlib import Path
 import shutil
 import time 
+import ast
 
 from utils.misc import * 
 from utils.file_utils import find_files_with_substring, load_tensorboard_logs
 from utils.create_task import create_task
 from utils.extract_task_code import *
+from utils.custom_code_extract import parse_markdown_for_first_function_code
 
 EUREKA_ROOT_DIR = (os.getcwd()) 
 # current location is Eureka_Development/Eureka_Analog_Sizing/eureka while Eureka_Development/Eureka_Analog_Sizing is the root directory with the submodules that contain the environment code and the RL code
 ISAAC_ROOT_DIR = f"{os.path.dirname(EUREKA_ROOT_DIR)}/submodules/gymnax_Analog_RL/gymnax/environments/custom" # f"{EUREKA_ROOT_DIR}/../isaacgymenvs/isaacgymenvs" # change to f"{EUREKA_ROOT_DIR}/../submodules/gymnax_Analog_RL/environments/custom"
 PUREJAXRL_ROOT_DIR = f"{os.path.dirname(EUREKA_ROOT_DIR)}/submodules/purejaxrl_Analog_RL/purejaxrl"
+HSPICE_ROOT_DIR = f"{EUREKA_ROOT_DIR}/hspice/2OTA" # Need to be changed for each design
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 @hydra.main(config_path="cfg", config_name="config", version_base="1.1")
@@ -66,12 +69,15 @@ def main(cfg):
     create_task(ISAAC_ROOT_DIR, cfg.env.task, cfg.env.env_name, suffix)
 
     DUMMY_FAILURE = -10000.
+    all_fitnesses = []
+    max_fitnesses = []
     max_successes = []
     max_successes_reward_correlation = []
     execute_rates = []
     best_code_paths = []
     max_success_overall = DUMMY_FAILURE
     max_success_reward_correlation_overall = DUMMY_FAILURE
+    max_fitness_overall = DUMMY_FAILURE
     max_reward_code_path = None 
     print("Debug 0: Initial System and User Messages")
     # Eureka generation loop
@@ -147,7 +153,16 @@ def main(cfg):
             for i, line in enumerate(lines):
                 if line.strip().startswith("def "):
                     code_string = "\n".join(lines[i:])
-                    
+
+
+            ## Experimental implementation that can extract nested functions
+            # Replaces current parsing system
+            # Remove the markdown code block delimiters
+            code_string = None
+            code_string = parse_markdown_for_first_function_code(response_cur)
+            ## Experimental End
+
+
             # Add the Eureka Reward Signature to the environment code
             try:
                 gpt_reward_signature, input_lst = get_function_signature(code_string)
@@ -160,8 +175,8 @@ def main(cfg):
             code_runs.append(code_string)
             reward_signature = [
                 f"def compute_reward(self, model_output: chex.Array, params: EnvParams) -> float:\n",
-                f"    reward, self.rew_dict = compute_reward(*(self.reward_compute_input(model_output, params)))\n",
-                f"    return reward\n",
+                f"    reward, reward_component = compute_ota_reward(*(self.reward_compute_input(model_output, params)))\n",
+                f"    return reward, reward_component\n",
             ]
             indent = " " * 4
             reward_signature = "".join([indent + line for line in reward_signature])
@@ -216,6 +231,7 @@ def main(cfg):
                                             f'headless={not cfg.capture_video}', f'capture_video={cfg.capture_video}', 'force_render=False',
                                             f'max_iterations={cfg.max_iterations}'],
                                             stdout=f, stderr=f)
+            print(f'Debug print process: {process}')
             block_until_training(rl_filepath, log_status=True, iter_num=iter, response_id=response_id)
             rl_runs.append(process)
             print('Debug 2.2: RL Training Completed')
@@ -226,9 +242,11 @@ def main(cfg):
         successes = []
         reward_correlations = []
         code_paths = []
+        fitness_scores = [] # Fitness scores from the Hspice simulation based on ouput gates
         
         exec_success = False 
         for response_id, (code_run, rl_run) in enumerate(zip(code_runs, rl_runs)):
+            print("rl_run.communicate()")
             rl_run.communicate()
             rl_filepath = f"env_iter{iter}_response{response_id}.txt"
             code_paths.append(f"env_iter{iter}_response{response_id}.py")
@@ -254,38 +272,79 @@ def main(cfg):
                     if line.startswith('Tensorboard Directory:'):
                         break 
                 tensorboard_logdir = line.split(':')[-1].strip() 
-                tensorboard_logs = load_tensorboard_logs(tensorboard_logdir)
-                max_iterations = np.array(tensorboard_logs['gt_reward']).shape[0]
-                epoch_freq = max(int(max_iterations // 10), 1)
-                
-                content += policy_feedback.format(epoch_freq=epoch_freq)
-                
-                # Compute Correlation between Human-Engineered and GPT Rewards
-                if "gt_reward" in tensorboard_logs and "gpt_reward" in tensorboard_logs:
-                    gt_reward = np.array(tensorboard_logs["gt_reward"])
-                    gpt_reward = np.array(tensorboard_logs["gpt_reward"])
-                    reward_correlation = np.corrcoef(gt_reward, gpt_reward)[0, 1]
-                    reward_correlations.append(reward_correlation)
+                # Check if the tensorboard logdir exists
+                if not os.path.exists(tensorboard_logdir) or not os.path.isdir(tensorboard_logdir):
+                    pass
+                else:                        
+                    tensorboard_logs = load_tensorboard_logs(tensorboard_logdir)
+                    max_iterations = np.array(tensorboard_logs['gt_reward']).shape[0]
+                    epoch_freq = max(int(max_iterations // 10), 1)
+                    
+                    content += policy_feedback.format(epoch_freq=epoch_freq)
+                    
+                    # Compute Correlation between Human-Engineered and GPT Rewards
+                    if "gt_reward" in tensorboard_logs and "gpt_reward" in tensorboard_logs:
+                        gt_reward = np.array(tensorboard_logs["gt_reward"])
+                        gpt_reward = np.array(tensorboard_logs["gpt_reward"])
+                        reward_correlation = np.corrcoef(gt_reward, gpt_reward)[0, 1]
+                        reward_correlations.append(reward_correlation)
 
-                # Add reward components log to the feedback
-                for metric in tensorboard_logs:
-                    if "/" not in metric:
-                        metric_cur = ['{:.2f}'.format(x) for x in tensorboard_logs[metric][::epoch_freq]]
-                        metric_cur_max = max(tensorboard_logs[metric])
-                        metric_cur_mean = sum(tensorboard_logs[metric]) / len(tensorboard_logs[metric])
-                        if "consecutive_successes" == metric:
-                            successes.append(metric_cur_max)
-                        metric_cur_min = min(tensorboard_logs[metric])
-                        if metric != "gt_reward" and metric != "gpt_reward":
-                            if metric != "consecutive_successes":
-                                metric_name = metric 
+                    # Add reward components log to the feedback
+                    for metric in tensorboard_logs:
+                        if "/" not in metric:
+                            metric_cur = ['{:.2f}'.format(x) for x in tensorboard_logs[metric][::epoch_freq]]
+                            metric_cur_max = max(tensorboard_logs[metric])
+                            metric_cur_mean = sum(tensorboard_logs[metric]) / len(tensorboard_logs[metric])
+                            if "consecutive_successes" == metric:
+                                successes.append(metric_cur_max)
+                            metric_cur_min = min(tensorboard_logs[metric])
+                            if metric != "gt_reward" and metric != "gpt_reward":
+                                if metric != "consecutive_successes":
+                                    metric_name = metric 
+                                else:
+                                    metric_name = "task_score"
+                                content += f"{metric_name}: {metric_cur}, Max: {metric_cur_max:.2f}, Mean: {metric_cur_mean:.2f}, Min: {metric_cur_min:.2f} \n"                    
                             else:
-                                metric_name = "task_score"
-                            content += f"{metric_name}: {metric_cur}, Max: {metric_cur_max:.2f}, Mean: {metric_cur_mean:.2f}, Min: {metric_cur_min:.2f} \n"                    
-                        else:
-                            # Provide ground-truth score when success rate not applicable
-                            if "consecutive_successes" not in tensorboard_logs:
-                                content += f"ground-truth score: {metric_cur}, Max: {metric_cur_max:.2f}, Mean: {metric_cur_mean:.2f}, Min: {metric_cur_min:.2f} \n"                    
+                                # Provide ground-truth score when success rate not applicable
+                                if "consecutive_successes" not in tensorboard_logs:
+                                    content += f"ground-truth score: {metric_cur}, Max: {metric_cur_max:.2f}, Mean: {metric_cur_mean:.2f}, Min: {metric_cur_min:.2f} \n"                    
+                # Run Hspice simulation to get the fitness score to attach to content
+                # extract x0~x15 values from env_iter*_response*.py
+                print("Debug 4: Running Hspice Simulation")
+                with open(f"env_iter{iter}_response{response_id}.txt", 'r') as f:
+                    file_content = f.read()
+                # Use a regular expression to extract the values of x0, x1, ..., x15
+                pattern = r'x(\d+):\s*([-\d.e+]+)'
+                matches = re.findall(pattern, file_content)
+                # Convert the matches to a dictionary
+                extracted_values = {f'x{match[0]}': float(match[1]) for match in matches}
+                spice_script_args = ['python', '-u', f'{HSPICE_ROOT_DIR}/SPICE.py']
+                for key, value in extracted_values.items():
+                    spice_script_args.append(f"--{key}={value}")
+                # Adding --env_name argument
+                spice_script_args.append(f'--env_name={task}-custom')
+                # Execute SPICE.py at HSPICE_ROOT_DIR using x and cfg.
+                sim_filepath = f"env_hspice_sim_eval_iter{iter}_response{response_id}.txt"
+                print(f"Debug 4-0: Hspice Simulation Started, Iteration {iter}, Response {response_id}, Command {spice_script_args}")
+                with open(sim_filepath, 'w') as f:
+                    process = subprocess.Popen(spice_script_args, stdout=f, stderr=f)
+                block_until_sim(sim_filepath, log_status=True, iter_num=iter, response_id=response_id)
+                print(f"Debug 4-1: Hspice Simulation Completed, Iteration {iter}, Response {response_id}")
+                try:
+                    with open(sim_filepath, 'r') as f:
+                        sim_str = f.read()
+                    content += stdout_str
+                    # Using regular expression to extract the number following "Fom:"
+                    match = re.search(r"'FoM': ([\d\.]+)", sim_str)
+                    if match:
+                        fom_number = float(match.group(1))
+                    else:
+                        fom_number = DUMMY_FAILURE
+                except: 
+                    content += "Hspice simulation failed to execute! Fitness score is not available!"
+                    fom_number = DUMMY_FAILURE
+                fitness_scores.append(fom_number)    
+
                 code_feedbacks.append(code_feedback)
                 content += code_feedback  
             else:
@@ -305,48 +364,80 @@ def main(cfg):
             best_code_paths.append(None)
             logging.info("All code generation failed! Repeat this iteration from the current message checkpoint!")
             continue
-
-        # Select the best code sample based on the success rate
-        best_sample_idx = np.argmax(np.array(successes))
+        all_fitnesses.append(fitness_scores)
+        # Select the best code sample based on the fitness score from hspice simulation#success rate
+        #best_sample_idx = np.argmax(np.array(successes))
+        best_sample_idx = np.argmax(np.array(fitness_scores))
         best_content = contents[best_sample_idx]
-            
-        max_success = successes[best_sample_idx]
-        max_success_reward_correlation = reward_correlations[best_sample_idx]
-        execute_rate = np.sum(np.array(successes) >= 0.) / cfg.sample
+        
+        max_fitness = fitness_scores[best_sample_idx]
+        #max_success = successes[best_sample_idx]
+        #max_success_reward_correlation = reward_correlations[best_sample_idx]
+        #execute_rate = np.sum(np.array(successes) >= 0.) / cfg.sample
 
+        '''
         # Update the best Eureka Output
         if max_success > max_success_overall:
             max_success_overall = max_success
             max_success_reward_correlation_overall = max_success_reward_correlation
             max_reward_code_path = code_paths[best_sample_idx]
+        '''
 
-        execute_rates.append(execute_rate)
-        max_successes.append(max_success)
-        max_successes_reward_correlation.append(max_success_reward_correlation)
+        # Update the best Eureka Output based on Fitness Score
+        if max_fitness > max_fitness_overall:
+            max_fitness_overall = max_fitness
+            max_reward_code_path = code_paths[best_sample_idx]
+        
+        max_fitnesses.append(max_fitness)
+
+        #execute_rates.append(execute_rate)
+        #max_successes.append(max_success)
+        #max_successes_reward_correlation.append(max_success_reward_correlation)
         best_code_paths.append(code_paths[best_sample_idx])
 
-        logging.info(f"Iteration {iter}: Max Success: {max_success}, Execute Rate: {execute_rate}, Max Success Reward Correlation: {max_success_reward_correlation}")
+        logging.info(f"Iteration {iter}: Max Fitness: {max_fitness}")
+        #logging.info(f"Iteration {iter}: Max Success: {max_success}, Execute Rate: {execute_rate}, Max Success Reward Correlation: {max_success_reward_correlation}")
         logging.info(f"Iteration {iter}: Best Generation ID: {best_sample_idx}")
         logging.info(f"Iteration {iter}: GPT Output Content:\n" +  responses[best_sample_idx].message.content + "\n")
         logging.info(f"Iteration {iter}: User Content:\n" + best_content + "\n")
             
         # Plot the success rate
-        fig, axs = plt.subplots(2, figsize=(6, 6))
+        fig, axs = plt.subplots(2, 1, figsize=(10, 10))
         fig.suptitle(f'{cfg.env.task}')
 
-        x_axis = np.arange(len(max_successes))
+        # First subplot: Max Fitness FoM
+        x_axis = np.arange(len(max_fitnesses))
 
-        axs[0].plot(x_axis, np.array(max_successes))
-        axs[0].set_title("Max Success")
+        axs[0].plot(x_axis, np.array(max_fitnesses))
+        axs[0].set_title("Max Fitness")
         axs[0].set_xlabel("Iteration")
 
-        axs[1].plot(x_axis, np.array(execute_rates))
-        axs[1].set_title("Execute Rate")
-        axs[1].set_xlabel("Iteration")
+        # Second subplot: Scatter plot with minimum values highlighted and connected
+        for i in range(len(all_fitnesses)):
+            # Plot all points for the current iteration
+            axs[1].scatter([i] * len(all_fitnesses[i]), all_fitnesses[i], color='blue', alpha=0.5)
 
-        fig.tight_layout(pad=3.0)
+            # Highlight the minimum sample for the current iteration
+            min_value = np.min(all_fitnesses[i])
+            axs[1].scatter(i, min_value, color='red', s=100, edgecolors='black', zorder=5)
+
+            # Connect the minimum values with a line
+            if i > 0:
+                prev_min_value = np.min(all_fitnesses[i - 1])
+                axs[1].plot([i - 1, i], [prev_min_value, min_value], color='red', linestyle='-', linewidth=2)
+
+        axs[1].set_title("Scatter Plot with Highlighted Minimum Values")
+        axs[1].set_xlabel("Iteration")
+        axs[1].set_ylabel("Sample Values")
+        axs[1].grid(True)
+
+        # Show plot
+        fig.tight_layout(rect=[0, 0, 1, 0.96])
+        #fig.tight_layout(pad=3.0)
         plt.savefig('summary.png')
-        np.savez('summary.npz', max_successes=max_successes, execute_rates=execute_rates, best_code_paths=best_code_paths, max_successes_reward_correlation=max_successes_reward_correlation)
+        np.savez('summary.npz', max_fitnesses=max_fitnesses, execute_rates=execute_rates, best_code_paths=best_code_paths, max_successes_reward_correlation=max_successes_reward_correlation)
+
+
 
         if len(messages) == 2:
             messages += [{"role": "assistant", "content": responses[best_sample_idx].message.content}]
@@ -365,7 +456,9 @@ def main(cfg):
         logging.info("All iterations of code generation failed, aborting...")
         logging.info("Please double check the output env_iter*_response*.txt files for repeating errors!")
         exit()
-    logging.info(f"Task: {task}, Max Training Success {max_success_overall}, Correlation {max_success_reward_correlation_overall}, Best Reward Code Path: {max_reward_code_path}")
+    
+    logging.info(f"Task: {task}, Max Fitness Score(FoM) {max_fitness_overall}, Best Reward Code Path: {max_reward_code_path}")
+    #logging.info(f"Task: {task}, Max Training Success {max_success_overall}, Correlation {max_success_reward_correlation_overall}, Best Reward Code Path: {max_reward_code_path}")
     logging.info(f"Evaluating best reward code {cfg.num_eval} times")
     shutil.copy(max_reward_code_path, output_file)
     
@@ -387,32 +480,45 @@ def main(cfg):
         block_until_training(rl_filepath)
         eval_runs.append(process)
 
+    reward_code_final_fitnesses = []
     reward_code_final_successes = []
     reward_code_correlations_final = []
     for i, rl_run in enumerate(eval_runs):
         rl_run.communicate()
         rl_filepath = f"reward_code_eval{i}.txt"
+
         with open(rl_filepath, 'r') as f:
-            stdout_str = f.read() 
-        lines = stdout_str.split('\n')
-        for i, line in enumerate(lines):
-            if line.startswith('Tensorboard Directory:'):
-                break 
-        tensorboard_logdir = line.split(':')[-1].strip() 
-        tensorboard_logs = load_tensorboard_logs(tensorboard_logdir)
-        max_success = max(tensorboard_logs['consecutive_successes'])
-        reward_code_final_successes.append(max_success)
+            file_content = f.read()
+        # Use a regular expression to extract the values of x0, x1, ..., x15
+        pattern = r'x(\d+):\s*([-\d.e+]+)'
+        matches = re.findall(pattern, file_content)
+        # Convert the matches to a dictionary
+        extracted_values = {f'x{match[0]}': float(match[1]) for match in matches}
+        spice_script_args = ['python', '-u', f'{HSPICE_ROOT_DIR}/SPICE.py']
+        for key, value in extracted_values.items():
+            spice_script_args.append(f"--{key}={value}")
+        # Adding --env_name argument
+        spice_script_args.append(f'--env_name={task}-custom')
+        # Execute SPICE.py at HSPICE_ROOT_DIR using x and cfg.
+        final_sim_eval_filepath = f"reward_code_eval{i}_sim.txt"
+        with open(final_sim_eval_filepath, 'w') as f:
+            process = subprocess.Popen(spice_script_args, stdout=f, stderr=f)
+        block_until_sim(final_sim_eval_filepath, log_status=True, iter_num=iter, response_id=i)
+        with open(final_sim_eval_filepath, 'r') as f:
+            sim_str = f.read()
+        # Using regular expression to extract the number following "FoM:"
+        match = re.search(r"'FoM': ([\d\.]+)", sim_str)
+        if match:
+            fom_number = float(match.group(1))
+            reward_code_final_fitnesses.append(fom_number)
+        else:
+            fom_number = DUMMY_FAILURE
 
-        if "gt_reward" in tensorboard_logs and "gpt_reward" in tensorboard_logs:
-            gt_reward = np.array(tensorboard_logs["gt_reward"])
-            gpt_reward = np.array(tensorboard_logs["gpt_reward"])
-            reward_correlation = np.corrcoef(gt_reward, gpt_reward)[0, 1]
-            reward_code_correlations_final.append(reward_correlation)
-
-    logging.info(f"Final Success Mean: {np.mean(reward_code_final_successes)}, Std: {np.std(reward_code_final_successes)}, Raw: {reward_code_final_successes}")
-    logging.info(f"Final Correlation Mean: {np.mean(reward_code_correlations_final)}, Std: {np.std(reward_code_correlations_final)}, Raw: {reward_code_correlations_final}")
-    np.savez('final_eval.npz', reward_code_final_successes=reward_code_final_successes, reward_code_correlations_final=reward_code_correlations_final)
-
+    logging.info(f"Final Fitness Mean: {np.mean(reward_code_final_fitnesses)}, Std: {np.std(reward_code_final_fitnesses)}, Raw: {reward_code_final_fitnesses}")
+    #logging.info(f"Final Success Mean: {np.mean(reward_code_final_successes)}, Std: {np.std(reward_code_final_successes)}, Raw: {reward_code_final_successes}")
+    #logging.info(f"Final Correlation Mean: {np.mean(reward_code_correlations_final)}, Std: {np.std(reward_code_correlations_final)}, Raw: {reward_code_correlations_final}")
+    #np.savez('final_eval.npz', reward_code_final_successes=reward_code_final_successes, reward_code_correlations_final=reward_code_correlations_final)
+    np.savez('final_eval.npz', reward_code_final_fitnesses=reward_code_final_fitnesses)
 
 if __name__ == "__main__":
     main()

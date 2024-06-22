@@ -1,0 +1,1021 @@
+ ****** HSPICE -- N-2017.12-SP2 linux64 (May 24 2018) ******                    
+  Copyright (c) 1986 - 2024 by Synopsys, Inc. All Rights Reserved.              
+  This software and the associated documentation are proprietary
+  to Synopsys, Inc. This software may only be used in accordance
+  with the terms and conditions of a written license agreement with
+  Synopsys, Inc. All other use, reproduction, or distribution of
+  this software is strictly prohibited.
+  Input File: amp_test_180nm_modified0.sp                                       
+  Command line options: /tool/synopsys/hspice/N-2017.12-SP2/hspice/linux64/hspice -i amp_test_180nm_modified0.sp -o output0
+ lic:  
+ lic: FLEXlm: SDK_11.6.9.3 
+ lic: USER:   kmcho                HOSTNAME: gpu-1 
+ lic: HOSTID: "a0423f611f74"       PID:      44583 
+ lic: Using FLEXlm license file: 
+ lic: 27020@inn.postech.ac.kr 
+ lic: Checkout 1 hspice 
+ lic: License/Maintenance for hspice will expire on 05-jul-2024/2023.03 
+ lic: 1(in_use)/2(total) FLOATING license(s) on SERVER 27020@inn.postech.ac.kr 
+ lic:   
+  **warning** (amp_test_180nm_modified0.sp:46) Unknown option conv. Check the option name again.
+  **warning** (amp_test_180nm_modified0.sp:46) runlvl smaller than 5, reset to 5 when accurate turned on
+  **warning** (amp_test_180nm_modified0.sp:91) Global net name, "gnd", in subckt pin list. The pin will be connected to the local net. Recommend to not use global net names in subckt pin lists.
+
+ **warning**  runlvl smaller than 5, reset to 5 when accurate turned on
+1****** HSPICE -- N-2017.12-SP2 linux64 (May 24 2018) ******                    
+ ******  
+ ** generated for: hspiced
+
+ ****** circuit name directory
+ circuit number to circuit name directory
+   number circuitname                     definition         multiplier
+        0 main circuit
+        1 xi70.                           ota                1.00 
+        2 xi68.                           ota                1.00 
+        3 xi69.                           ota                1.00 
+        4 xi67.                           ota                1.00 
+        5 xi66.                           ota                1.00 
+  **warning** (amp_test_180nm_modified0.sp:151) Both nodes of element v1 are connected together; Line ignored.
+  **info** (amp_test_180nm_modified0.sp:155) DC voltage reset to initial transient source value in source 0:v6. new dc=0.0000D+00
+ ***************************************************************************
+ ***        model parameters  model name:   0:pch_tn.2 model type:pmos   ***
+ ***************************************************************************
+
+   *** general parameters ***
+    deriv=   0.           
+
+   ***  level 49  model parameters  ***
+
+      hspver=    2006.03               level=         49         
+     version=       3.24            paramchk=          1         
+      apwarn=          1                lite=          0         
+      vgslim=          0             binUnit=          1         
+      capMod=          2               xpart=          1         
+      mobMod=          1              nqsMod=          0         
+      stiMod=          0                 elm=          5         
+    sfvtflag=          0                 tox=    3.7e-09 meter   
+          xj=    1.9e-07 meter       binflag=          1         
+        lmin=5.04111e-07 meter          lmax=2.00041e-05 meter   
+        wmin= 1.9992e-05 meter          wmax=   0.000201 meter   
+        lref=          0 meter          wref=          0 meter   
+        lint=      3e-08 meter          wint= 5.0079e-10 meter   
+       lmult=          1               wmult=          1         
+          ll=          0                 lln=          1         
+          lw=          0                 lwn=          1         
+         lwl=          0                  wl=          0         
+         wln=          1                  ww=          0         
+         wwn=          1                 wwl=          0         
+         dwg=          0 m/V             dwb=          0 m/V^1/2 
+          xl=      2e-08                  xw=      3e-08         
+          a0=     1.7508                 ags=     0.3591 V^-1    
+          b0=          0 meter            b1=          0 meter   
+        keta=   0.025987 V^-1           voff=   -0.10511 V       
+       ngate=          0 cm^-3           vbx=          0 V       
+         vbm=         -3 V                xt=   1.55e-07 meter   
+        vth0=   -0.43359 V               nch= 4.5117e+17 cm^-3   
+        nsub=      6e+16 cm^-3           nlx=          0 meter   
+      gamma1=          0 V^-1/2       gamma2=          0 V^-1/2  
+          k1=     0.4872 V^1/2            k2=   0.037353         
+          k3=          0                 k3b=          0 V^-1    
+          w0=          0 meter          dvt0=          0         
+        dvt1=          0                dvt2=          0 V^-1    
+       dvt0w=          0 meter^-1      dvt1w=          0 meter^-1
+       dvt2w=          0 V^-1           dsub=          0         
+        eta0= 9.9998e-13                etab=   0.005121 V^-1    
+          u0=     66.247 cm^2/V/sec         ua=-4.7002e-10 m/V     
+          ub= 1.6622e-18 (m/V)^2          uc= -3.382e-11 V^-1    
+        vsat=     104700 m/sec            a1=          0 v^-1    
+          a2=        0.7               delta=  0.0028692 V       
+        rdsw=     768.97 ohm-um         prwg=          0 V^-1    
+        prwb=          0 V^-1/2           wr=          1         
+        pclm=      1.747             pdiblc1=          0         
+     pdiblc2=-0.00015339             pdiblcb=          0 V^-1    
+      pscbe1=      8e+08 V/m          pscbe2=      5e-07 V/m     
+       drout=          0                pvag=          0         
+     nfactor=     1.2777                cdsc=          0 f/m^2   
+       cdscb=          0 f/V/m^2       cdscd=          0 f/V/m^2 
+         cit=-0.00065396 f/m^2        alpha0=    2.1e-09 m/V     
+       beta0=       13.2 V               dlc=    5.5e-08 meter   
+         dwc=     -4e-08 meter           clc=      1e-07 meter   
+         cle=        0.6                cgso= 2.9739e-10 f/m     
+        cgdo= 2.9739e-10 f/m            cgbo=      1e-11 f/m     
+        cgsl=          0 f/m            cgdl=          0 f/m     
+      ckappa=        0.6                  cf=          0 f/m     
+        acde=          1 m/V            moin=         15 V^1/2   
+        toxm=    3.7e-09 m            dtoxcv=          0 m       
+         vfb (not used)                alpha1=          0 1/V     
+        ijth=        0.1 A              noff=          1         
+      voffcv=          0                 tcj=          0 1/K     
+       tcjsw=          0 1/K          tcjswg=          0 1/K     
+         tpb=          0 V/K           tpbsw=          0 V/K     
+      tpbswg=          0 V/K             llc=          0         
+         lwc=          0                lwlc=          0         
+         wlc=          0                 wwc=          0         
+        wwlc=          0                tnom=     298.15 K       
+         kt1=    -0.2814 V              kt1l=          0         
+         kt2=  -0.023695                 ute=    -0.8121         
+         ua1=          0 m/V             ub1=          0 (m/V)^2 
+         uc1= -2.901e-11 m/V^2            at=     310690 m/s     
+         prt=          0         
+         using Berkeley noise model       noiMod=          2         
+        noia=  7.943e+19                noib=  2.692e+06         
+        noic=  4.467e-12                  em=    1.1e+07         
+          ef=       1.15                  af=          1         
+          kf=          0              gdsnoi=-1.23457e-29         
+         using Berkeley diodes          using ACM 
+         acm=        12                 hdif=  1.65e-07 meter    
+        ldif=     9e-08 meter             js=1.2134e-07 amp/m^2  
+         jsw=4.9305e-14 amp/m            xti=         3          
+          nj=    1.0096                   cj= 0.0010787 f/m^2    
+          mj=   0.41039                   pb=   0.82903 V        
+        cjsw=1.8905e-10 f/m             mjsw=   0.10983          
+         php (not used)                  pbsw=       0.5 V        
+      cjgate (not used)                 cjswg=   5.7e-10 f/m      
+       mjswg=    0.2594                pbswg=    0.6152 V        
+         la0=  -0.061248                lags=    0.20959         
+       lketa=  -0.011118               lvoff= 0.00028509         
+       lvth0=  -0.018103                 lk1=  0.0060345         
+         lk2= -0.0060392               leta0= 4.7516e-16         
+       letab= -0.0024159                 lu0=    -2.4727         
+         lua=-6.7567e-11                 lub=-2.3758e-20         
+         luc= 9.5792e-12               lvsat=    -47.516         
+      ldelta=  0.0033095               lpclm=   -0.39994         
+    lpdiblc2=  0.0030642            lnfactor=    0.20375         
+        lcit=-0.00015257                lkt1= -0.0040388         
+        lkt2=  -0.009888                lute= -0.0038963         
+        luc1=  1.337e-11                 lat=     -53645         
+ ***************************************************************************
+ ***        model parameters  model name:   0:nch_tn.2 model type:nmos   ***
+ ***************************************************************************
+
+   *** general parameters ***
+    deriv=   0.           
+
+   ***  level 49  model parameters  ***
+
+      hspver=    2006.03               level=         49         
+     version=       3.24            paramchk=          1         
+      apwarn=          1                lite=          0         
+      vgslim=          0             binUnit=          1         
+      capMod=          2               xpart=          1         
+      mobMod=          1              nqsMod=          0         
+      stiMod=          0                 elm=          5         
+    sfvtflag=          0                 tox=    3.6e-09 meter   
+          xj=    1.7e-07 meter       binflag=          1         
+        lmin=  4.993e-07 meter          lmax=1.99993e-05 meter   
+        wmin=2.00016e-05 meter          wmax=   0.000201 meter   
+        lref=          0 meter          wref=          0 meter   
+        lint=    1.5e-08 meter          wint= 1.9993e-08 meter   
+       lmult=          1               wmult=          1         
+          ll=          0                 lln=          1         
+          lw=          0                 lwn=          1         
+         lwl=          0                  wl=          0         
+         wln=          1                  ww=          0         
+         wwn=          1                 wwl=          0         
+         dwg=          0 m/V             dwb=          0 m/V^1/2 
+          xl=      2e-08                  xw=      3e-08         
+          a0=      1.887                 ags=    0.44089 V^-1    
+          b0=          0 meter            b1=          0 meter   
+        keta=  0.0086257 V^-1           voff=   -0.10484 V       
+       ngate=          0 cm^-3           vbx=          0 V       
+         vbm=         -3 V                xt=   1.55e-07 meter   
+        vth0=    0.41781 V               nch= 6.0081e+17 cm^-3   
+        nsub=      6e+16 cm^-3           nlx=          0 meter   
+      gamma1=          0 V^-1/2       gamma2=          0 V^-1/2  
+          k1=    0.48216 V^1/2            k2= -0.0075464         
+          k3=          0                 k3b=          0 V^-1    
+          w0=          0 meter          dvt0=          0         
+        dvt1=          0                dvt2=          0 V^-1    
+       dvt0w=          0 meter^-1      dvt1w=          0 meter^-1
+       dvt2w=          0 V^-1           dsub=          0         
+        eta0=-1.21449e-05                etab=  0.0051234 V^-1    
+          u0=     318.56 cm^2/V/sec         ua=-4.2423e-10 m/V     
+          ub= 1.2435e-18 (m/V)^2          uc= 6.7931e-11 V^-1    
+        vsat=     232990 m/sec            a1=          0 v^-1    
+          a2=        0.7               delta=  0.0071318 V       
+        rdsw=     165.47 ohm-um         prwg=          0 V^-1    
+        prwb=          0 V^-1/2           wr=          1         
+        pclm=  -0.017558             pdiblc1=          0         
+     pdiblc2=   0.001422             pdiblcb=          0 V^-1    
+      pscbe1= 4.7248e+08 V/m          pscbe2=      1e-06 V/m     
+       drout=          0                pvag=          0         
+     nfactor=    0.89915                cdsc=          0 f/m^2   
+       cdscb=          0 f/V/m^2       cdscd=          0 f/V/m^2 
+         cit= -0.0006179 f/m^2        alpha0=    1.5e-07 m/V     
+       beta0=       13.2 V               dlc=    5.5e-08 meter   
+         dwc=     -4e-08 meter           clc=      1e-07 meter   
+         cle=        0.6                cgso= 3.1326e-10 f/m     
+        cgdo= 3.1326e-10 f/m            cgbo=      1e-11 f/m     
+        cgsl=          0 f/m            cgdl=          0 f/m     
+      ckappa=        0.6                  cf=          0 f/m     
+        acde=          1 m/V            moin=         15 V^1/2   
+        toxm=    3.6e-09 m            dtoxcv=          0 m       
+         vfb (not used)                alpha1=          0 1/V     
+        ijth=        0.1 A              noff=          1         
+      voffcv=          0                 tcj=          0 1/K     
+       tcjsw=          0 1/K          tcjswg=          0 1/K     
+         tpb=          0 V/K           tpbsw=          0 V/K     
+      tpbswg=          0 V/K             llc=          0         
+         lwc=          0                lwlc=          0         
+         wlc=          0                 wwc=          0         
+        wwlc=          0                tnom=     298.15 K       
+         kt1=   -0.30694 V              kt1l=          0         
+         kt2=  -0.030354                 ute=    -1.5931         
+         ua1=          0 m/V             ub1=          0 (m/V)^2 
+         uc1=-5.9399e-11 m/V^2            at=     688130 m/s     
+         prt=          0         
+         using Berkeley noise model       noiMod=          2         
+        noia=   6.31e+20                noib=     125900         
+        noic=  1.096e-13                  em=   2.03e+07         
+          ef=       0.94                  af=          1         
+          kf=          0              gdsnoi=-1.23457e-29         
+         using Berkeley diodes          using ACM 
+         acm=        12                 hdif=  1.65e-07 meter    
+        ldif=     9e-08 meter             js=1.8892e-07 amp/m^2  
+         jsw=1.1542e-13 amp/m            xti=         3          
+          nj=    1.0268                   cj=0.00090455 f/m^2    
+          mj=   0.35628                   pb=   0.71329 V        
+        cjsw=1.7094e-10 f/m             mjsw=  0.050615          
+         php (not used)                  pbsw=       0.5 V        
+      cjgate (not used)                 cjswg=     5e-10 f/m      
+       mjswg=    0.1868                pbswg=    0.5458 V        
+         la0=   -0.27341                lags=   -0.21573         
+       lketa=  0.0012645               lvoff= -0.0032101         
+       lvth0=   0.043838                 lk1=   0.034709         
+         lk2=  -0.024158               leta0= 0.00024276         
+       letab= -0.0024663                 lu0=    -16.883         
+         lua= -1.273e-10                 lub= 4.9155e-20         
+         luc=  3.175e-12               lvsat=     -29693         
+      ldelta=  0.0014034               lpclm=    0.37097         
+    lpdiblc2=  0.0041972             lpscbe1= 1.6025e+08         
+    lnfactor=    0.16698                lcit=-0.00010403         
+        lkt1=   0.016753                lkt2= -0.0089231         
+        lute=   0.036063                luc1= 4.3758e-11         
+         lat=    -284490         
+ ***************************************************************************
+ ***        model parameters  model name:   0:nch_tn.2 model type:nmos   ***
+ ***************************************************************************
+
+   *** general parameters ***
+    deriv=   0.           
+
+   ***  level 49  model parameters  ***
+
+      hspver=    2006.03               level=         49         
+     version=       3.24            paramchk=          1         
+      apwarn=          1                lite=          0         
+      vgslim=          0             binUnit=          1         
+      capMod=          2               xpart=          1         
+      mobMod=          1              nqsMod=          0         
+      stiMod=          0                 elm=          5         
+    sfvtflag=          0                 tox=    3.6e-09 meter   
+          xj=    1.7e-07 meter       binflag=          1         
+        lmin=  4.993e-07 meter          lmax=1.99993e-05 meter   
+        wmin= 1.0016e-06 meter          wmax=2.00016e-05 meter   
+        lref=          0 meter          wref=          0 meter   
+        lint=    1.5e-08 meter          wint= 1.9993e-08 meter   
+       lmult=          1               wmult=          1         
+          ll=          0                 lln=          1         
+          lw=          0                 lwn=          1         
+         lwl=          0                  wl=          0         
+         wln=          1                  ww=          0         
+         wwn=          1                 wwl=          0         
+         dwg=          0 m/V             dwb=          0 m/V^1/2 
+          xl=      2e-08                  xw=      3e-08         
+          a0=     1.9052                 ags=     0.4439 V^-1    
+          b0=          0 meter            b1=          0 meter   
+        keta=  0.0076605 V^-1           voff=   -0.10376 V       
+       ngate=          0 cm^-3           vbx=          0 V       
+         vbm=         -3 V                xt=   1.55e-07 meter   
+        vth0=    0.41642 V               nch= 6.0081e+17 cm^-3   
+        nsub=      6e+16 cm^-3           nlx=          0 meter   
+      gamma1=          0 V^-1/2       gamma2=          0 V^-1/2  
+          k1=    0.47753 V^1/2            k2= -0.0053248         
+          k3=          0                 k3b=          0 V^-1    
+          w0=          0 meter          dvt0=          0         
+        dvt1=          0                dvt2=          0 V^-1    
+       dvt0w=          0 meter^-1      dvt1w=          0 meter^-1
+       dvt2w=          0 V^-1           dsub=          0         
+        eta0=-1.18629e-05                etab=  0.0051235 V^-1    
+          u0=      320.3 cm^2/V/sec         ua=-4.2979e-10 m/V     
+          ub= 1.2626e-18 (m/V)^2          uc= 6.9813e-11 V^-1    
+        vsat=     233010 m/sec            a1=          0 v^-1    
+          a2=        0.7               delta=  0.0072082 V       
+        rdsw=     165.47 ohm-um         prwg=          0 V^-1    
+        prwb=          0 V^-1/2           wr=          1         
+        pclm=  -0.017317             pdiblc1=          0         
+     pdiblc2=  0.0013821             pdiblcb=          0 V^-1    
+      pscbe1= 4.6161e+08 V/m          pscbe2=      1e-06 V/m     
+       drout=          0                pvag=          0         
+     nfactor=    0.88245                cdsc=          0 f/m^2   
+       cdscb=          0 f/V/m^2       cdscd=          0 f/V/m^2 
+         cit=-0.00056612 f/m^2        alpha0=    1.5e-07 m/V     
+       beta0=       13.2 V               dlc=    5.5e-08 meter   
+         dwc=     -4e-08 meter           clc=      1e-07 meter   
+         cle=        0.6                cgso= 3.1326e-10 f/m     
+        cgdo= 3.1326e-10 f/m            cgbo=      1e-11 f/m     
+        cgsl=          0 f/m            cgdl=          0 f/m     
+      ckappa=        0.6                  cf=          0 f/m     
+        acde=          1 m/V            moin=         15 V^1/2   
+        toxm=    3.6e-09 m            dtoxcv=          0 m       
+         vfb (not used)                alpha1=          0 1/V     
+        ijth=        0.1 A              noff=          1         
+      voffcv=          0                 tcj=          0 1/K     
+       tcjsw=          0 1/K          tcjswg=          0 1/K     
+         tpb=          0 V/K           tpbsw=          0 V/K     
+      tpbswg=          0 V/K             llc=          0         
+         lwc=          0                lwlc=          0         
+         wlc=          0                 wwc=          0         
+        wwlc=          0                tnom=     298.15 K       
+         kt1=   -0.30761 V              kt1l=          0         
+         kt2=  -0.029414                 ute=    -1.6016         
+         ua1=          0 m/V             ub1=          0 (m/V)^2 
+         uc1=-6.1816e-11 m/V^2            at=     688380 m/s     
+         prt=          0         
+         using Berkeley noise model       noiMod=          2         
+        noia=   6.31e+20                noib=     125900         
+        noic=  1.096e-13                  em=   2.03e+07         
+          ef=       0.94                  af=          1         
+          kf=          0              gdsnoi=-1.23457e-29         
+         using Berkeley diodes          using ACM 
+         acm=        12                 hdif=  1.65e-07 meter    
+        ldif=     9e-08 meter             js=1.8892e-07 amp/m^2  
+         jsw=1.1542e-13 amp/m            xti=         3          
+          nj=    1.0268                   cj=0.00090455 f/m^2    
+          mj=   0.35628                   pb=   0.71329 V        
+        cjsw=1.7094e-10 f/m             mjsw=  0.050615          
+         php (not used)                  pbsw=       0.5 V        
+      cjgate (not used)                 cjswg=     5e-10 f/m      
+       mjswg=    0.1868                pbswg=    0.5458 V        
+         la0=   -0.28047                lags=   -0.21851         
+       lketa=  0.0011527               lvoff= -0.0034509         
+       lvth0=   0.043788                 lk1=   0.036369         
+         lk2=  -0.024682               leta0= 0.00023713         
+       letab= -0.0024685                 lu0=    -16.946         
+         lua=-1.2999e-10                 lub= 5.3356e-20         
+         luc= 3.4184e-12               lvsat=     -30144         
+      ldelta=   0.001366               lpclm=    0.36613         
+    lpdiblc2=  0.0042167             lpscbe1= 1.6558e+08         
+    lnfactor=    0.16795                lcit=-0.00011464         
+        lkt1=   0.017391                lkt2= -0.0090157         
+        lute=    0.03716                luc1= 4.4642e-11         
+         lat=    -285190                 wa0=   -0.36368         
+        wags=  -0.060066               wketa=   0.019296         
+       wvoff=  -0.021526               wvth0=   0.027704         
+         wk1=   0.092537                 wk2=  -0.044413         
+       weta0= -5.634e-06               wetab=-2.1688e-06         
+         wu0=    -34.619                 wua= 1.1103e-10         
+         wub=-3.8017e-19                 wuc= -3.762e-11         
+       wvsat=     -450.3              wdelta= -0.0015273         
+       wpclm= -0.0048329            wpdiblc2= 0.00079788         
+     wpscbe1= 2.1744e+08            wnfactor=    0.33371         
+        wcit= -0.0010351                wkt1=   0.013368         
+        wkt2=   -0.01879                wute=    0.17044         
+        wuc1= 4.8316e-11                 wat=    -4976.8         
+         pa0=    0.14109                pags=   0.055667         
+       pketa=  0.0022341               pvoff=  0.0048146         
+       pvth0= 0.00099433                 pk1=  -0.033179         
+         pk2=   0.010469               peta0= 0.00011262         
+       petab= 4.3353e-05                 pu0=     1.2612         
+         pua= 5.3851e-11                 pub=-8.3994e-20         
+         puc= -4.867e-12               pvsat=     9001.3         
+      pdelta= 0.00074731               ppclm=   0.096607         
+    ppdiblc2= -0.0003904             ppscbe1=-1.0639e+08         
+    pnfactor=   -0.01952                pcit= 0.00021216         
+        pkt1=  -0.012769                pkt2=  0.0018526         
+        pute=  -0.021928                puc1=-1.7689e-11         
+         pat=      13973         
+ 
+
+  
+  
+      
+ **info** set option symb=1 internally to help for convergence.
+ *****************************************************************
+ ******  option summary
+ ******
+ runlvl  = 5         bypass  = 2.0000    
+  
+  Opening plot unit= 15
+ file=output0.pa0
+
+ no convergence with standard algorithm,  trying damped pseudo-transient
+
+  *** pseudo tran succeeded *** 
+ ******  
+ ** generated for: hspiced
+
+ ****** operating point information tnom=  25.000 temp=  25.000 ******
+ ******  
+ ** generated for: hspiced
+
+ ****** noise analysis tnom=  25.000 temp=  25.000 ******
+ 
+
+====== Noise output port at: V(op3,on3)                      ======
+ 
+     frequency = 1.000e+09       hz
+
+  
+ Element    Source Noise (V^2/Hz) Source Value (A^2/Hz) Source rx (Ohm) Integrated noise (V) 
+ xi68^mpm5  TOT    4.25806e-21                                          3.501178e-04         
+            rd     2.9151e-25     4.010006e-18          2.696212e-04    1.760149e-08         
+            rs     2.19119e-26    4.010006e-18          7.392089e-05    3.052609e-07         
+            id     4.25773e-21    2.17388e-23           1.399494e+01    1.012229e-04         
+            fn     1.48264e-26    7.56997e-29           1.399494e+01    3.351661e-04         
+ xi68^mpm4  TOT    4.25806e-21                                          3.501178e-04         
+            rd     2.9151e-25     4.010006e-18          2.696212e-04    1.760149e-08         
+            rs     2.19119e-26    4.010006e-18          7.392089e-05    3.052609e-07         
+            id     4.25773e-21    2.17388e-23           1.399494e+01    1.012229e-04         
+            fn     1.48264e-26    7.56997e-29           1.399494e+01    3.351661e-04         
+ xi68^mnm8  TOT    3.63622e-21                                          4.784061e-04         
+            rd     7.09594e-25    9.347923e-18          2.755164e-04    2.664930e-08         
+            rs     6.93976e-26    9.347923e-18          8.616177e-05    4.086592e-07         
+            id     3.63398e-21    1.85542e-23           1.399492e+01    9.351508e-05         
+            fn     1.46726e-24    7.49145e-27           1.399492e+01    4.691771e-04         
+ xi68^mnm7  TOT    3.63622e-21                                          4.784061e-04         
+            rd     7.09594e-25    9.347923e-18          2.755164e-04    2.664930e-08         
+            rs     6.93976e-26    9.347923e-18          8.616177e-05    4.086592e-07         
+            id     3.63398e-21    1.85542e-23           1.399492e+01    9.351508e-05         
+            fn     1.46726e-24    7.49145e-27           1.399492e+01    4.691771e-04         
+ xi68^r2    TOT    3.71726e-23                                          2.039798e-05         
+            rs     3.71726e-23    1.96717e-25           1.374646e+01    2.039798e-05         
+            1/f    0.             0.                    1.374646e+01    0.                   
+ xi68^r3    TOT    3.71726e-23                                          2.039798e-05         
+            rs     3.71726e-23    1.96717e-25           1.374646e+01    2.039798e-05         
+            1/f    0.             0.                    1.374646e+01    0.                   
+ xi68^mpm2  TOT    7.20177e-24                                          4.145094e-02         
+            rd     1.13874e-27    1.249162e-17          9.547773e-06    5.691679e-08         
+            rs     5.47488e-29    1.249162e-17          2.093525e-06    3.718275e-05         
+            id     7.20056e-24    3.34023e-23           4.642962e-01    1.351925e-02         
+            fn     9.1024e-30     4.22246e-29           4.642962e-01    3.918430e-02         
+ xi68^mpm0  TOT    7.20177e-24                                          4.145094e-02         
+            rd     1.13874e-27    1.249162e-17          9.547773e-06    5.691679e-08         
+            rs     5.47488e-29    1.249162e-17          2.093525e-06    3.718275e-05         
+            id     7.20056e-24    3.34023e-23           4.642962e-01    1.351925e-02         
+            fn     9.1024e-30     4.22246e-29           4.642962e-01    3.918430e-02         
+ xi68^mnm2  TOT    6.25999e-24                                          1.363829e-01         
+            rd     1.19662e-28    1.516788e-18          8.882101e-06    2.053270e-07         
+            rs     3.55663e-28    1.516788e-18          1.531288e-05    9.501410e-05         
+            id     6.25395e-24    2.90127e-23           4.642829e-01    1.259930e-02         
+            fn     5.56967e-27    2.58383e-26           4.642829e-01    1.357997e-01         
+ xi68^mnm0  TOT    6.25999e-24                                          1.363829e-01         
+            rd     1.19662e-28    1.516788e-18          8.882101e-06    2.053270e-07         
+            rs     3.55663e-28    1.516788e-18          1.531288e-05    9.501410e-05         
+            id     6.25395e-24    2.90127e-23           4.642829e-01    1.259930e-02         
+            fn     5.56967e-27    2.58383e-26           4.642829e-01    1.357997e-01         
+ xi68^r1    TOT    3.2249e-24                                           2.785791e-06         
+            rs     3.2249e-24     1.64653e-26           1.399501e+01    2.785791e-06         
+            1/f    0.             0.                    1.399501e+01    0.                   
+ xi68^r0    TOT    3.2249e-24                                           2.785791e-06         
+            rs     3.2249e-24     1.64653e-26           1.399501e+01    2.785791e-06         
+            1/f    0.             0.                    1.399501e+01    0.                   
+ xi68^mnm1  TOT    5.39239e-48                                          6.272285e-15         
+            rd     1.15189e-51    2.218089e-17          7.206352e-18    7.301069e-18         
+            rs     7.99161e-53    2.218089e-17          1.898137e-18    2.816443e-17         
+            id     5.39071e-48    6.72626e-23           2.830978e-13    6.194841e-15         
+            fn     4.46625e-52    5.57276e-27           2.830978e-13    9.821736e-16         
+ xi68^mnm11 TOT    2.68764e-48                                          1.367703e-14         
+            rd     3.46386e-52    7.64276e-19           2.128898e-17    9.33655e-20          
+            rs     8.77112e-52    7.64276e-19           3.387679e-17    1.977938e-17         
+            id     2.68556e-48    1.50728e-24           1.334813e-12    4.700340e-15         
+            fn     8.60255e-52    4.82822e-28           1.334813e-12    1.284397e-14         
+ xi68^mpm7  TOT    1.60863e-50                                          6.077552e-15         
+            rd     1.76365e-54    1.354211e-17          3.6088e-19      8.24549e-19          
+            rs     8.8439e-56     1.354211e-17          8.08125e-20     7.457416e-18         
+            id     1.60844e-50    4.47638e-23           1.895569e-14    6.066996e-15         
+            fn     5.04978e-56    1.40538e-28           1.895569e-14    3.579585e-16         
+ xi68^mnm10 TOT    1.60305e-50                                          6.195509e-15         
+            rd     1.44225e-54    1.229502e-17          3.42496e-19     1.70887e-19          
+            rs     6.2208e-54     1.229502e-17          7.11309e-19     2.694444e-17         
+            id     1.60172e-50    3.45767e-23           2.152291e-14    5.884485e-15         
+            fn     5.71521e-54    1.23376e-26           2.152291e-14    1.938152e-15         
+ xi68^mpm12 TOT    5.59931e-51                                          1.952304e-14         
+            rd     5.54402e-55    8.60835e-19           8.02513e-19     1.41843e-19          
+            rs     4.88979e-53    8.60835e-19           7.536767e-18    2.348255e-17         
+            id     5.54985e-51    2.30217e-24           4.909893e-14    8.537972e-15         
+            fn     6.99334e-57    2.90095e-30           4.909893e-14    1.755710e-14         
+ xi68^mnm13 TOT    4.58038e-51                                          3.920046e-14         
+            rd     2.76057e-53    7.64276e-19           6.009991e-18    1.91296e-19          
+            rs     8.70282e-52    7.64276e-19           3.374465e-17    3.140872e-17         
+            id     3.68078e-51    1.52784e-24           4.908296e-14    6.955433e-15         
+            fn     1.71842e-54    7.13291e-28           4.908296e-14    3.857845e-14         
+ xi68^mpm9  TOT    2.84567e-51                                          8.121061e-16         
+            rd     7.34553e-55    2.769676e-17          1.62854e-19     2.04797e-19          
+            rs     1.57449e-51    2.769676e-17          7.539728e-18    9.526547e-18         
+            id     1.27044e-51    7.4084e-23            4.141098e-15    8.109158e-16         
+            fn     1.59636e-57    9.30894e-29           4.141098e-15    4.290784e-17         
+ xi68^mpm6  TOT    3.27588e-52                                          4.975378e-16         
+            rd     3.0454e-56     1.354211e-17          4.74219e-20     1.43845e-20          
+            rs     7.41775e-55    1.354211e-17          2.34042e-19     1.412402e-18         
+            id     3.26815e-52    2.78965e-23           3.422758e-15    4.963653e-16         
+            fn     6.92009e-58    5.90689e-29           3.422758e-15    3.410820e-17         
+ xi68^mnm9  TOT    9.72849e-54                                          4.836579e-18         
+            rd     1.6007e-57     1.229502e-17          1.14101e-20     4.01294e-22          
+            rs     2.8496e-57     1.229502e-17          1.52239e-20     1.85728e-20          
+            id     9.72115e-54    1.90528e-23           7.142981e-16    4.675112e-18         
+            fn     2.88656e-57    5.65746e-27           7.142981e-16    1.239144e-18         
+ xi70^r3    TOT    0.                                                   0.                   
+            rs     0.             1.96717e-25           0.              0.                   
+            1/f    0.             0.                    0.              0.                   
+ xi70^r2    TOT    0.                                                   0.                   
+            rs     0.             1.96717e-25           0.              0.                   
+            1/f    0.             0.                    0.              0.                   
+ xi70^r1    TOT    0.                                                   0.                   
+            rs     0.             1.64653e-26           0.              0.                   
+            1/f    0.             0.                    0.              0.                   
+ xi70^r0    TOT    0.                                                   0.                   
+            rs     0.             1.64653e-26           0.              0.                   
+            1/f    0.             0.                    0.              0.                   
+ xi69^r3    TOT    0.                                                   0.                   
+            rs     0.             1.96717e-25           0.              0.                   
+            1/f    0.             0.                    0.              0.                   
+ xi69^r2    TOT    0.                                                   0.                   
+            rs     0.             1.96717e-25           0.              0.                   
+            1/f    0.             0.                    0.              0.                   
+ xi69^r1    TOT    0.                                                   0.                   
+            rs     0.             1.64653e-26           0.              0.                   
+            1/f    0.             0.                    0.              0.                   
+ xi69^r0    TOT    0.                                                   0.                   
+            rs     0.             1.64653e-26           0.              0.                   
+            1/f    0.             0.                    0.              0.                   
+ xi67^r3    TOT    0.                                                   0.                   
+            rs     0.             1.96717e-25           0.              0.                   
+            1/f    0.             0.                    0.              0.                   
+ xi67^r2    TOT    0.                                                   0.                   
+            rs     0.             1.96717e-25           0.              0.                   
+            1/f    0.             0.                    0.              0.                   
+ xi67^r1    TOT    0.                                                   0.                   
+            rs     0.             1.64653e-26           0.              0.                   
+            1/f    0.             0.                    0.              0.                   
+ xi67^r0    TOT    0.                                                   0.                   
+            rs     0.             1.64653e-26           0.              0.                   
+            1/f    0.             0.                    0.              0.                   
+ xi66^r3    TOT    0.                                                   0.                   
+            rs     0.             1.96717e-25           0.              0.                   
+            1/f    0.             0.                    0.              0.                   
+ xi66^r2    TOT    0.                                                   0.                   
+            rs     0.             1.96717e-25           0.              0.                   
+            1/f    0.             0.                    0.              0.                   
+ xi66^r1    TOT    0.                                                   0.                   
+            rs     0.             1.64653e-26           0.              0.                   
+            1/f    0.             0.                    0.              0.                   
+ xi66^r0    TOT    0.                                                   0.                   
+            rs     0.             1.64653e-26           0.              0.                   
+            1/f    0.             0.                    0.              0.                   
+ xi70^mpm12 TOT    0.                                                   0.                   
+            rd     0.             8.60835e-19           0.              0.                   
+            rs     0.             8.60835e-19           0.              0.                   
+            id     0.             2.30217e-24           0.              0.                   
+            fn     0.             2.90095e-30           0.              0.                   
+ xi70^mpm9  TOT    0.                                                   0.                   
+            rd     0.             2.769676e-17          0.              0.                   
+            rs     0.             2.769676e-17          0.              0.                   
+            id     0.             7.4084e-23            0.              0.                   
+            fn     0.             9.30893e-29           0.              0.                   
+ xi70^mpm7  TOT    0.                                                   0.                   
+            rd     0.             1.354211e-17          0.              0.                   
+            rs     0.             1.354211e-17          0.              0.                   
+            id     0.             4.47598e-23           0.              0.                   
+            fn     0.             1.40514e-28           0.              0.                   
+ xi70^mpm6  TOT    0.                                                   0.                   
+            rd     0.             1.354211e-17          0.              0.                   
+            rs     0.             1.354211e-17          0.              0.                   
+            id     0.             2.79008e-23           0.              0.                   
+            fn     0.             5.90853e-29           0.              0.                   
+ xi70^mpm5  TOT    0.                                                   0.                   
+            rd     0.             4.010006e-18          0.              0.                   
+            rs     0.             4.010006e-18          0.              0.                   
+            id     0.             2.23087e-23           0.              0.                   
+            fn     0.             7.96408e-29           0.              0.                   
+ xi70^mpm4  TOT    0.                                                   0.                   
+            rd     0.             4.010006e-18          0.              0.                   
+            rs     0.             4.010006e-18          0.              0.                   
+            id     0.             2.11922e-23           0.              0.                   
+            fn     0.             7.27347e-29           0.              0.                   
+ xi70^mpm2  TOT    0.                                                   0.                   
+            rd     0.             1.249162e-17          0.              0.                   
+            rs     0.             1.249162e-17          0.              0.                   
+            id     0.             3.34021e-23           0.              0.                   
+            fn     0.             4.22311e-29           0.              0.                   
+ xi70^mpm0  TOT    0.                                                   0.                   
+            rd     0.             1.249162e-17          0.              0.                   
+            rs     0.             1.249162e-17          0.              0.                   
+            id     0.             3.34025e-23           0.              0.                   
+            fn     0.             4.22182e-29           0.              0.                   
+ xi70^mnm13 TOT    0.                                                   0.                   
+            rd     0.             7.64276e-19           0.              0.                   
+            rs     0.             7.64276e-19           0.              0.                   
+            id     0.             1.52784e-24           0.              0.                   
+            fn     0.             7.13291e-28           0.              0.                   
+ xi70^mnm11 TOT    0.                                                   0.                   
+            rd     0.             7.64276e-19           0.              0.                   
+            rs     0.             7.64276e-19           0.              0.                   
+            id     0.             1.50728e-24           0.              0.                   
+            fn     0.             4.82822e-28           0.              0.                   
+ xi70^mnm10 TOT    0.                                                   0.                   
+            rd     0.             1.229502e-17          0.              0.                   
+            rs     0.             1.229502e-17          0.              0.                   
+            id     0.             3.45727e-23           0.              0.                   
+            fn     0.             1.23357e-26           0.              0.                   
+ xi70^mnm9  TOT    0.                                                   0.                   
+            rd     0.             1.229502e-17          0.              0.                   
+            rs     0.             1.229502e-17          0.              0.                   
+            id     0.             1.90564e-23           0.              0.                   
+            fn     0.             5.65887e-27           0.              0.                   
+ xi70^mnm8  TOT    0.                                                   0.                   
+            rd     0.             9.347923e-18          0.              0.                   
+            rs     0.             9.347923e-18          0.              0.                   
+            id     0.             1.86534e-23           0.              0.                   
+            fn     0.             8.42478e-27           0.              0.                   
+ xi70^mnm7  TOT    0.                                                   0.                   
+            rd     0.             9.347923e-18          0.              0.                   
+            rs     0.             9.347923e-18          0.              0.                   
+            id     0.             1.84644e-23           0.              0.                   
+            fn     0.             6.45776e-27           0.              0.                   
+ xi70^mnm2  TOT    0.                                                   0.                   
+            rd     0.             1.516788e-18          0.              0.                   
+            rs     0.             1.516788e-18          0.              0.                   
+            id     0.             2.90175e-23           0.              0.                   
+            fn     0.             2.5814e-26            0.              0.                   
+ xi70^mnm1  TOT    0.                                                   0.                   
+            rd     0.             2.218089e-17          0.              0.                   
+            rs     0.             2.218089e-17          0.              0.                   
+            id     0.             6.72533e-23           0.              0.                   
+            fn     0.             5.57395e-27           0.              0.                   
+ xi70^mnm0  TOT    0.                                                   0.                   
+            rd     0.             1.516788e-18          0.              0.                   
+            rs     0.             1.516788e-18          0.              0.                   
+            id     0.             2.9008e-23            0.              0.                   
+            fn     0.             2.5862e-26            0.              0.                   
+ xi69^mpm12 TOT    0.                                                   0.                   
+            rd     0.             8.60835e-19           0.              0.                   
+            rs     0.             8.60835e-19           0.              0.                   
+            id     0.             2.30217e-24           0.              0.                   
+            fn     0.             2.90095e-30           0.              0.                   
+ xi69^mpm9  TOT    0.                                                   0.                   
+            rd     0.             2.769676e-17          0.              0.                   
+            rs     0.             2.769676e-17          0.              0.                   
+            id     0.             7.40843e-23           0.              0.                   
+            fn     0.             9.30854e-29           0.              0.                   
+ xi69^mpm7  TOT    0.                                                   0.                   
+            rd     0.             1.354211e-17          0.              0.                   
+            rs     0.             1.354211e-17          0.              0.                   
+            id     0.             4.44205e-23           0.              0.                   
+            fn     0.             1.38484e-28           0.              0.                   
+ xi69^mpm6  TOT    0.                                                   0.                   
+            rd     0.             1.354211e-17          0.              0.                   
+            rs     0.             1.354211e-17          0.              0.                   
+            id     0.             2.82773e-23           0.              0.                   
+            fn     0.             6.04997e-29           0.              0.                   
+ xi69^mpm5  TOT    0.                                                   0.                   
+            rd     0.             4.010006e-18          0.              0.                   
+            rs     0.             4.010006e-18          0.              0.                   
+            id     0.             2.23104e-23           0.              0.                   
+            fn     0.             7.96514e-29           0.              0.                   
+ xi69^mpm4  TOT    0.                                                   0.                   
+            rd     0.             4.010006e-18          0.              0.                   
+            rs     0.             4.010006e-18          0.              0.                   
+            id     0.             2.11937e-23           0.              0.                   
+            fn     0.             7.27412e-29           0.              0.                   
+ xi69^mpm2  TOT    0.                                                   0.                   
+            rd     0.             1.249162e-17          0.              0.                   
+            rs     0.             1.249162e-17          0.              0.                   
+            id     0.             3.34021e-23           0.              0.                   
+            fn     0.             4.22311e-29           0.              0.                   
+ xi69^mpm0  TOT    0.                                                   0.                   
+            rd     0.             1.249162e-17          0.              0.                   
+            rs     0.             1.249162e-17          0.              0.                   
+            id     0.             3.34025e-23           0.              0.                   
+            fn     0.             4.22183e-29           0.              0.                   
+ xi69^mnm13 TOT    0.                                                   0.                   
+            rd     0.             7.64276e-19           0.              0.                   
+            rs     0.             7.64276e-19           0.              0.                   
+            id     0.             1.52784e-24           0.              0.                   
+            fn     0.             7.13291e-28           0.              0.                   
+ xi69^mnm11 TOT    0.                                                   0.                   
+            rd     0.             7.64276e-19           0.              0.                   
+            rs     0.             7.64276e-19           0.              0.                   
+            id     0.             1.50728e-24           0.              0.                   
+            fn     0.             4.82822e-28           0.              0.                   
+ xi69^mnm10 TOT    0.                                                   0.                   
+            rd     0.             1.229502e-17          0.              0.                   
+            rs     0.             1.229502e-17          0.              0.                   
+            id     0.             3.42274e-23           0.              0.                   
+            fn     0.             1.21756e-26           0.              0.                   
+ xi69^mnm9  TOT    0.                                                   0.                   
+            rd     0.             1.229502e-17          0.              0.                   
+            rs     0.             1.229502e-17          0.              0.                   
+            id     0.             1.93669e-23           0.              0.                   
+            fn     0.             5.78094e-27           0.              0.                   
+ xi69^mnm8  TOT    0.                                                   0.                   
+            rd     0.             9.347923e-18          0.              0.                   
+            rs     0.             9.347923e-18          0.              0.                   
+            id     0.             1.86537e-23           0.              0.                   
+            fn     0.             8.42756e-27           0.              0.                   
+ xi69^mnm7  TOT    0.                                                   0.                   
+            rd     0.             9.347923e-18          0.              0.                   
+            rs     0.             9.347923e-18          0.              0.                   
+            id     0.             1.84646e-23           0.              0.                   
+            fn     0.             6.4612e-27            0.              0.                   
+ xi69^mnm2  TOT    0.                                                   0.                   
+            rd     0.             1.516788e-18          0.              0.                   
+            rs     0.             1.516788e-18          0.              0.                   
+            id     0.             2.90147e-23           0.              0.                   
+            fn     0.             2.58061e-26           0.              0.                   
+ xi69^mnm1  TOT    0.                                                   0.                   
+            rd     0.             2.218089e-17          0.              0.                   
+            rs     0.             2.218089e-17          0.              0.                   
+            id     0.             6.6454e-23            0.              0.                   
+            fn     0.             5.67792e-27           0.              0.                   
+ xi69^mnm0  TOT    0.                                                   0.                   
+            rd     0.             1.516788e-18          0.              0.                   
+            rs     0.             1.516788e-18          0.              0.                   
+            id     0.             2.90052e-23           0.              0.                   
+            fn     0.             2.58542e-26           0.              0.                   
+ xi67^mpm12 TOT    0.                                                   0.                   
+            rd     0.             8.60835e-19           0.              0.                   
+            rs     0.             8.60835e-19           0.              0.                   
+            id     0.             2.30217e-24           0.              0.                   
+            fn     0.             2.90095e-30           0.              0.                   
+ xi67^mpm9  TOT    0.                                                   0.                   
+            rd     0.             2.769676e-17          0.              0.                   
+            rs     0.             2.769676e-17          0.              0.                   
+            id     0.             7.4084e-23            0.              0.                   
+            fn     0.             9.30894e-29           0.              0.                   
+ xi67^mpm7  TOT    0.                                                   0.                   
+            rd     0.             1.354211e-17          0.              0.                   
+            rs     0.             1.354211e-17          0.              0.                   
+            id     0.             4.47638e-23           0.              0.                   
+            fn     0.             1.40538e-28           0.              0.                   
+ xi67^mpm6  TOT    0.                                                   0.                   
+            rd     0.             1.354211e-17          0.              0.                   
+            rs     0.             1.354211e-17          0.              0.                   
+            id     0.             2.78965e-23           0.              0.                   
+            fn     0.             5.90689e-29           0.              0.                   
+ xi67^mpm5  TOT    0.                                                   0.                   
+            rd     0.             4.010006e-18          0.              0.                   
+            rs     0.             4.010006e-18          0.              0.                   
+            id     0.             2.17388e-23           0.              0.                   
+            fn     0.             7.56997e-29           0.              0.                   
+ xi67^mpm4  TOT    0.                                                   0.                   
+            rd     0.             4.010006e-18          0.              0.                   
+            rs     0.             4.010006e-18          0.              0.                   
+            id     0.             2.17388e-23           0.              0.                   
+            fn     0.             7.56997e-29           0.              0.                   
+ xi67^mpm2  TOT    0.                                                   0.                   
+            rd     0.             1.249162e-17          0.              0.                   
+            rs     0.             1.249162e-17          0.              0.                   
+            id     0.             3.34023e-23           0.              0.                   
+            fn     0.             4.22246e-29           0.              0.                   
+ xi67^mpm0  TOT    0.                                                   0.                   
+            rd     0.             1.249162e-17          0.              0.                   
+            rs     0.             1.249162e-17          0.              0.                   
+            id     0.             3.34023e-23           0.              0.                   
+            fn     0.             4.22246e-29           0.              0.                   
+ xi67^mnm13 TOT    0.                                                   0.                   
+            rd     0.             7.64276e-19           0.              0.                   
+            rs     0.             7.64276e-19           0.              0.                   
+            id     0.             1.52784e-24           0.              0.                   
+            fn     0.             7.13291e-28           0.              0.                   
+ xi67^mnm11 TOT    0.                                                   0.                   
+            rd     0.             7.64276e-19           0.              0.                   
+            rs     0.             7.64276e-19           0.              0.                   
+            id     0.             1.50728e-24           0.              0.                   
+            fn     0.             4.82822e-28           0.              0.                   
+ xi67^mnm10 TOT    0.                                                   0.                   
+            rd     0.             1.229502e-17          0.              0.                   
+            rs     0.             1.229502e-17          0.              0.                   
+            id     0.             3.45767e-23           0.              0.                   
+            fn     0.             1.23376e-26           0.              0.                   
+ xi67^mnm9  TOT    0.                                                   0.                   
+            rd     0.             1.229502e-17          0.              0.                   
+            rs     0.             1.229502e-17          0.              0.                   
+            id     0.             1.90528e-23           0.              0.                   
+            fn     0.             5.65746e-27           0.              0.                   
+ xi67^mnm8  TOT    0.                                                   0.                   
+            rd     0.             9.347923e-18          0.              0.                   
+            rs     0.             9.347923e-18          0.              0.                   
+            id     0.             1.85542e-23           0.              0.                   
+            fn     0.             7.49145e-27           0.              0.                   
+ xi67^mnm7  TOT    0.                                                   0.                   
+            rd     0.             9.347923e-18          0.              0.                   
+            rs     0.             9.347923e-18          0.              0.                   
+            id     0.             1.85542e-23           0.              0.                   
+            fn     0.             7.49145e-27           0.              0.                   
+ xi67^mnm2  TOT    0.                                                   0.                   
+            rd     0.             1.516788e-18          0.              0.                   
+            rs     0.             1.516788e-18          0.              0.                   
+            id     0.             2.90127e-23           0.              0.                   
+            fn     0.             2.58383e-26           0.              0.                   
+ xi67^mnm1  TOT    0.                                                   0.                   
+            rd     0.             2.218089e-17          0.              0.                   
+            rs     0.             2.218089e-17          0.              0.                   
+            id     0.             6.72626e-23           0.              0.                   
+            fn     0.             5.57276e-27           0.              0.                   
+ xi67^mnm0  TOT    0.                                                   0.                   
+            rd     0.             1.516788e-18          0.              0.                   
+            rs     0.             1.516788e-18          0.              0.                   
+            id     0.             2.90127e-23           0.              0.                   
+            fn     0.             2.58383e-26           0.              0.                   
+ xi66^mpm12 TOT    0.                                                   0.                   
+            rd     0.             8.60835e-19           0.              0.                   
+            rs     0.             8.60835e-19           0.              0.                   
+            id     0.             2.30217e-24           0.              0.                   
+            fn     0.             2.90095e-30           0.              0.                   
+ xi66^mpm9  TOT    0.                                                   0.                   
+            rd     0.             2.769676e-17          0.              0.                   
+            rs     0.             2.769676e-17          0.              0.                   
+            id     0.             7.4084e-23            0.              0.                   
+            fn     0.             9.30894e-29           0.              0.                   
+ xi66^mpm7  TOT    0.                                                   0.                   
+            rd     0.             1.354211e-17          0.              0.                   
+            rs     0.             1.354211e-17          0.              0.                   
+            id     0.             4.47638e-23           0.              0.                   
+            fn     0.             1.40538e-28           0.              0.                   
+ xi66^mpm6  TOT    0.                                                   0.                   
+            rd     0.             1.354211e-17          0.              0.                   
+            rs     0.             1.354211e-17          0.              0.                   
+            id     0.             2.78965e-23           0.              0.                   
+            fn     0.             5.90689e-29           0.              0.                   
+ xi66^mpm5  TOT    0.                                                   0.                   
+            rd     0.             4.010006e-18          0.              0.                   
+            rs     0.             4.010006e-18          0.              0.                   
+            id     0.             2.17388e-23           0.              0.                   
+            fn     0.             7.56997e-29           0.              0.                   
+ xi66^mpm4  TOT    0.                                                   0.                   
+            rd     0.             4.010006e-18          0.              0.                   
+            rs     0.             4.010006e-18          0.              0.                   
+            id     0.             2.17388e-23           0.              0.                   
+            fn     0.             7.56997e-29           0.              0.                   
+ xi66^mpm2  TOT    0.                                                   0.                   
+            rd     0.             1.249162e-17          0.              0.                   
+            rs     0.             1.249162e-17          0.              0.                   
+            id     0.             3.34023e-23           0.              0.                   
+            fn     0.             4.22246e-29           0.              0.                   
+ xi66^mpm0  TOT    0.                                                   0.                   
+            rd     0.             1.249162e-17          0.              0.                   
+            rs     0.             1.249162e-17          0.              0.                   
+            id     0.             3.34023e-23           0.              0.                   
+            fn     0.             4.22246e-29           0.              0.                   
+ xi66^mnm13 TOT    0.                                                   0.                   
+            rd     0.             7.64276e-19           0.              0.                   
+            rs     0.             7.64276e-19           0.              0.                   
+            id     0.             1.52784e-24           0.              0.                   
+            fn     0.             7.13291e-28           0.              0.                   
+ xi66^mnm11 TOT    0.                                                   0.                   
+            rd     0.             7.64276e-19           0.              0.                   
+            rs     0.             7.64276e-19           0.              0.                   
+            id     0.             1.50728e-24           0.              0.                   
+            fn     0.             4.82822e-28           0.              0.                   
+ xi66^mnm10 TOT    0.                                                   0.                   
+            rd     0.             1.229502e-17          0.              0.                   
+            rs     0.             1.229502e-17          0.              0.                   
+            id     0.             3.45767e-23           0.              0.                   
+            fn     0.             1.23376e-26           0.              0.                   
+ xi66^mnm9  TOT    0.                                                   0.                   
+            rd     0.             1.229502e-17          0.              0.                   
+            rs     0.             1.229502e-17          0.              0.                   
+            id     0.             1.90528e-23           0.              0.                   
+            fn     0.             5.65746e-27           0.              0.                   
+ xi66^mnm8  TOT    0.                                                   0.                   
+            rd     0.             9.347923e-18          0.              0.                   
+            rs     0.             9.347923e-18          0.              0.                   
+            id     0.             1.85542e-23           0.              0.                   
+            fn     0.             7.49145e-27           0.              0.                   
+ xi66^mnm7  TOT    0.                                                   0.                   
+            rd     0.             9.347923e-18          0.              0.                   
+            rs     0.             9.347923e-18          0.              0.                   
+            id     0.             1.85542e-23           0.              0.                   
+            fn     0.             7.49145e-27           0.              0.                   
+ xi66^mnm2  TOT    0.                                                   0.                   
+            rd     0.             1.516788e-18          0.              0.                   
+            rs     0.             1.516788e-18          0.              0.                   
+            id     0.             2.90127e-23           0.              0.                   
+            fn     0.             2.58383e-26           0.              0.                   
+ xi66^mnm1  TOT    0.                                                   0.                   
+            rd     0.             2.218089e-17          0.              0.                   
+            rs     0.             2.218089e-17          0.              0.                   
+            id     0.             6.72626e-23           0.              0.                   
+            fn     0.             5.57276e-27           0.              0.                   
+ xi66^mnm0  TOT    0.                                                   0.                   
+            rd     0.             1.516788e-18          0.              0.                   
+            rs     0.             1.516788e-18          0.              0.                   
+            id     0.             2.90127e-23           0.              0.                   
+            fn     0.             2.58383e-26           0.              0.                   
+ 
+
+
+
+ **** total output noise voltage         = 1.590e-20       sq v/hz
+                                         = 1.261e-10       v/rt hz
+
+       transfer function value:
+        op3,on3)/v3                      = 1.167e-03      
+      equivalent input noise at v3                            
+                                         = 1.081e-07       /rt hz
+ 
+
+
+ **** the results of the sqrt of integral (v**2 / freq)
+      from fstart upto  1.000e+09       hz. using more freq points 
+      results in more accurate total noise values.     
+
+ **** total output noise voltage   =  2.016e-01       volts         
+
+  **** total equivalent input noise =  2.132e-03                     
+
+
+
+ ******
+ ** generated for: hspiced
+
+ ****** ac analysis tnom=  25.000 temp=  25.000 ******
+ ugf= 3.1063e+07
+ phase_0db=-1.7946e+02
+ pm= 5.3929e-01
+ dc_gain= 8.9172e+01
+ cm_gain= 3.0573e-01
+ pw_gain=-5.9414e+01
+ cmrr= 8.8866e+01
+ psrr= 1.4859e+02
+ ******
+ ** generated for: hspiced
+
+ ****** transient analysis tnom=  25.000 temp=  25.000 ******
+ vh= 1.7942e+00
+ vl= 4.0072e-01
+ os= 1.3935e+00
+ upper= 5.5102e-01
+ init= 5.5002e-01
+ upper_bound= 5.5112e-01
+ lower_bound= 5.5092e-01
+ upper_trig= 8.4953e-07  targ= 8.5988e-07   trig= 1.0353e-08
+ lower_trig= 8.5428e-07  targ= 8.6399e-07   trig= 9.7092e-09
+ i_vdd=-8.4265e-04
+ v_vdd= 1.8000e+00
+ pwr= 1.5168e-03
+ ******  
+ ** generated for: hspiced
+
+ ****** transient analysis tnom=  25.000 temp=  25.000 ******
+
+          ***** job concluded
+ ******  
+ ** generated for: hspiced
+
+ ****** job statistics summary tnom=  25.000 temp=  25.000 ******
+  
+  
+ ******  Machine Information  ******
+ CPU:
+ model name	: Intel(R) Xeon(R) Gold 6226R CPU @ 2.90GHz
+ cpu MHz	: 1525.048
+  
+ OS:
+ Linux version 3.10.0-1160.108.1.el7.x86_64 (mockbuild@kbuilder.bsys.centos.org) (gcc version 4.8.5 20150623 (Red Hat 4.8.5-44) (GCC) ) #1 SMP Thu Jan 25 16:17:31 UTC 2024
+
+
+  ******  HSPICE Threads Information  ******
+
+  Command Line Threads Count :     1
+  Available CPU Count        :    64
+  Actual Threads Count       :     1
+
+
+  ****** Statistics of Ignored Elements ******
+  Voltage Sources :       1
+
+  ******  Circuit Statistics  ******
+  # nodes       =     247 # elements   =     151
+  # resistors   =      20 # capacitors =      30 # inductors   =       0
+  # mutual_inds =       0 # vccs       =       0 # vcvs        =       0
+  # cccs        =       0 # ccvs       =       0 # volt_srcs   =      11
+  # curr_srcs   =       5 # diodes     =       0 # bjts        =       0
+  # jfets       =       0 # mosfets    =      85 # U elements  =       0
+  # T elements  =       0 # W elements =       0 # B elements  =       0
+  # S elements  =       0 # P elements =       0 # va device   =       0
+  # vector_srcs =       0 # N elements =       0
+
+
+  ******  Runtime Statistics (seconds)  ******
+
+  analysis           time    # points   tot. iter  conv.iter
+  op point           0.16           1         633
+  ac analysis        0.07         111         111
+  transient          0.07         101         560         223 rev=        31
+  readin             0.12
+  errchk             0.04
+  setup              0.00
+  output             0.00
+
+
+           peak memory used        297.63 megabytes
+           total cpu time            0.49 seconds
+           total elapsed time        0.41 seconds
+           job started at     23:39:37 06/22/2024
+           job ended   at     23:39:37 06/22/2024
+
+
+ lic: Release hspice token(s) 
+ lic: total license checkout elapse time:        0.12(s)

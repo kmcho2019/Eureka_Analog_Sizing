@@ -1,0 +1,8 @@
+$DATA1 SOURCE='HSPICE' VERSION='N-2017.12-SP2 linux64' PARAM_COUNT=0
+.TITLE '** generated for: hspiced'
+ ugf              phase_0db        pm               dc_gain         
+ cm_gain          pw_gain          cmrr             psrr            
+ temper           alter#          
+  3.106e+07       -1.795e+02        5.393e-01        8.917e+01      
+  3.057e-01       -5.941e+01        8.887e+01        1.486e+02      
+  2.500e+01       1               

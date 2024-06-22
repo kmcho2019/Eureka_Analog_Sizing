@@ -1,0 +1,47 @@
+*
+* Alias device for LVS
+******************************************************************
+*MOS Device (I/O ESD)
+******************************************************************
+.malias   nch_tn         = nch_tn_nsi
+.malias   nch_tn         = nch_tn_nsi2
+.malias   pch_tn         = pch_tn_nsi
+.malias   nch_tk33       = nch_tk33_nsi
+.malias   nch_tk33       = nch_tk33_nsi2
+.malias   pch_tk33       = pch_tk33_nsi
+.malias   nch_tk50       = nch_tk50_nsi
+.malias   nch_tk50       = nch_tk50_nsie
+.malias   pch_tk50       = pch_tk50_nsi
+******************************************************************
+******************************************************************
+*MOS Device (Non-Salicide)
+******************************************************************
+.malias   nch_tn         = nch_tn_ns
+.malias   pch_tn         = pch_tn_ns
+.malias   nch_tk33       = nch_tk33_ns
+.malias   pch_tk33       = pch_tk33_ns
+.malias   nch_tk50       = nch_tk50_ns
+.malias   pch_tk50       = pch_tk50_ns
+******************************************************************
+*MOS Device (Core + with DNW)
+******************************************************************
+.malias   nch_tn         = nchd_tn
+.malias   pch_tn         = pchd_tn
+.malias   nch_tk33       = nchd_tk33
+.malias   pch_tk33       = pchd_tk33
+.malias   nch_tk50       = nchd_tk50
+.malias   pch_tk50       = pchd_tk50
+.malias   nch_tn         = nchd_tn_ns
+.malias   pch_tn         = pchd_tn_ns
+.malias   nch_tk33       = nchd_tk33_ns
+.malias   pch_tk33       = pchd_tk33_ns
+.malias   nch_tk50       = nchd_tk50_ns
+.malias   pch_tk50       = pchd_tk50_ns
+******************************************************************
+*DIODE Device (I/O ESD)
+******************************************************************
+.malias   ndio_tk33      = ndio_tk33_i
+.malias   pdio_tk33      = pdio_tk33_i
+.malias   ndio_tk50      = ndio_tk50_i
+.malias   pdio_tk50      = pdio_tk50_i
+

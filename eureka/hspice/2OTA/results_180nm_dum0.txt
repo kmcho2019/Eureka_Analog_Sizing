@@ -1,0 +1,10 @@
+ **** total output noise voltage   =  2.016e-01       volts         
+ ugf= 3.1063e+07
+ pm= 5.3929e-01
+ dc_gain= 8.9172e+01
+ cmrr= 8.8866e+01
+ psrr= 1.4859e+02
+ os= 1.3935e+00
+ upper_trig= 8.4953e-07  targ= 8.5988e-07   trig= 1.0353e-08
+ lower_trig= 8.5428e-07  targ= 8.6399e-07   trig= 9.7092e-09
+ pwr= 1.5168e-03

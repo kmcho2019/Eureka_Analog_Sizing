@@ -1,0 +1,59 @@
+****** HSPICE -- N-2017.12-SP2 linux64 (May 24 2018) ******
+ Input File: amp_test_180nm_modified0.sp
+ lic:
+ lic: FLEXlm: SDK_11.6.9.3
+ lic: USER:   kmcho                HOSTNAME: gpu-1
+ lic: HOSTID: "a0423f611f74"       PID:      44583
+ lic: Using FLEXlm license file:
+ lic: 27020@inn.postech.ac.kr
+ lic: Checkout 1 hspice
+ lic: License/Maintenance for hspice will expire on 05-jul-2024/2023.03
+ lic: 1(in_use)/2(total) FLOATING license(s) on SERVER 27020@inn.postech.ac.kr
+ lic:
+ init: begin read circuit files, cpu clock= 2.30E-01
+       option artist =     2.00
+       option ingold =     2.00
+       option parhier = local
+       option psf =     2.00
+       option dcon =    -1.00
+       option conv =    -1.00
+       option method = gear
+       option accurate =     1.00
+ init: end read circuit files, cpu clock= 2.50E-01 peak memory=     296 mb
+ init: begin check errors, cpu clock= 2.50E-01
+ init: end check errors, cpu clock= 2.90E-01 peak memory=     296 mb
+ init: begin setup matrix, pivot=     0 cpu clock= 2.90E-01
+       establish matrix -- done, cpu clock= 2.90E-01 peak memory=     296 mb
+       re-order matrix -- done, cpu clock= 2.90E-01 peak memory=     296 mb
+ init: end setup matrix, cpu clock= 2.90E-01 peak memory=     296 mb
+ dcop: begin dcop, cpu clock= 3.00E-01
+ dcop: begin pseudo transient
+ dcop: end pseudo transient
+ dcop: end dcop, cpu clock= 4.40E-01 peak memory=     296 mb tot_iter=     633
+ sweep: ac ac0    begin, #sweeps= 111 cpu clock= 4.50E-01
+ ac: frequency=1.00e-02
+ ac: frequency=1.26e-01
+ ac: frequency=1.58e+00
+ ac: frequency=2.00e+01
+ ac: frequency=2.51e+02
+ ac: frequency=3.16e+03
+ ac: frequency=3.98e+04
+ ac: frequency=5.01e+05
+ ac: frequency=6.31e+06
+ ac: frequency=7.94e+07
+ ac: frequency=1.00e+09
+ sweep: ac ac0    end, cpu clock= 5.20E-01 peak memory=     297 mb
+ sweep: tran tran0    begin, stop_t=  1.00E-06 #sweeps= 101 cpu clock= 5.30E-01
+ tran: time= 1.0577E-07 tot_iter=     130 conv_iter=      50 cpu clock= 5.50E-01
+ tran: time= 2.0600E-07 tot_iter=     162 conv_iter=      64 cpu clock= 5.50E-01
+ tran: time= 3.0084E-07 tot_iter=     181 conv_iter=      73 cpu clock= 5.50E-01
+ tran: time= 4.1374E-07 tot_iter=     204 conv_iter=      84 cpu clock= 5.60E-01
+ tran: time= 5.0000E-07 tot_iter=     229 conv_iter=      94 cpu clock= 5.60E-01
+ tran: time= 6.0019E-07 tot_iter=     376 conv_iter=     151 cpu clock= 5.80E-01
+ tran: time= 7.0606E-07 tot_iter=     453 conv_iter=     181 cpu clock= 5.90E-01
+ tran: time= 8.0227E-07 tot_iter=     474 conv_iter=     191 cpu clock= 5.90E-01
+ tran: time= 9.0663E-07 tot_iter=     531 conv_iter=     212 cpu clock= 6.00E-01
+ tran: time= 1.0000E-06 tot_iter=     557 conv_iter=     222 cpu clock= 6.00E-01
+ sweep: tran tran0    end, cpu clock= 6.00E-01 peak memory=     297 mb
+>info:         ***** hspice job concluded
+ lic: Release hspice token(s)

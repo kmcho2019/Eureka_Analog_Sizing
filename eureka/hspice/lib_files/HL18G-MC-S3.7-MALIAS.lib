@@ -1,0 +1,47 @@
+*
+* Alias device for LVS
+******************************************************************
+*MOS Device (I/O ESD)
+******************************************************************
+.malias   nch_tn_mc      = nch_tn_nsi_mc
+.malias   nch_tn_mc      = nch_tn_nsi2_mc
+.malias   pch_tn_mc      = pch_tn_nsi_mc
+.malias   nch_tk33_mc    = nch_tk33_nsi_mc
+.malias   nch_tk33_mc    = nch_tk33_nsi2_mc
+.malias   pch_tk33_mc    = pch_tk33_nsi_mc
+.malias   nch_tk50_mc    = nch_tk50_nsi_mc
+.malias   nch_tk50_mc    = nch_tk50_nsie_mc
+.malias   pch_tk50_mc    = pch_tk50_nsi_mc
+******************************************************************
+******************************************************************
+*MOS Device (Non-Salicide)
+******************************************************************
+.malias   nch_tn_mc      = nch_tn_ns_mc
+.malias   pch_tn_mc      = pch_tn_ns_mc
+.malias   nch_tk33_mc    = nch_tk33_ns_mc
+.malias   pch_tk33_mc    = pch_tk33_ns_mc
+.malias   nch_tk50_mc    = nch_tk50_ns_mc
+.malias   pch_tk50_mc    = pch_tk50_ns_mc
+******************************************************************
+*MOS Device (Core + with DNW)
+******************************************************************
+.malias   nch_tn_mc      = nchd_tn_mc
+.malias   pch_tn_mc      = pchd_tn_mc
+.malias   nch_tk33_mc    = nchd_tk33_mc
+.malias   pch_tk33_mc    = pchd_tk33_mc
+.malias   nch_tk50_mc    = nchd_tk50_mc
+.malias   pch_tk50_mc    = pchd_tk50_mc
+.malias   nch_tn_mc      = nchd_tn_ns_mc
+.malias   pch_tn_mc      = pchd_tn_ns_mc
+.malias   nch_tk33_mc    = nchd_tk33_ns_mc
+.malias   pch_tk33_mc    = pchd_tk33_ns_mc
+.malias   nch_tk50_mc    = nchd_tk50_ns_mc
+.malias   pch_tk50_mc    = pchd_tk50_ns_mc
+******************************************************************
+*DIODE Device (I/O ESD)
+******************************************************************
+.malias   ndio_tk33      = ndio_tk33_i
+.malias   pdio_tk33      = pdio_tk33_i
+.malias   ndio_tk50      = ndio_tk50_i
+.malias   pdio_tk50      = pdio_tk50_i
+

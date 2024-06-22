@@ -14,7 +14,7 @@ temperature: 1.0
 suffix: GPT  # suffix for generated files (indicates LLM model)
 
 # Eureka parameters
-iteration: 1 # how many iterations of Eureka to run
+iteration: 10 # how many iterations of Eureka to run
 sample: 3 # number of Eureka samples to generate per iteration
 max_iterations: 3000 # RL Policy training iterations (decrease this to make the feedback loop faster)
 num_eval: 5 # number of evaluation episodes to run for the final reward

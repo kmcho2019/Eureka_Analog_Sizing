@@ -2,7 +2,7 @@ import jax
 import jax.numpy as jnp
 from jax import lax
 from gymnax.environments import environment, spaces
-from typing import Tuple, Optional
+from typing import Tuple, Optional, List
 import chex
 from flax import struct
 from flax import linen as nn
@@ -135,46 +135,30 @@ class TwoStageOTA(environment.Environment):
     def default_params(self) -> EnvParams:
         return EnvParams()
 
+    @staticmethod
     def deNorm_action(
-        current_state: EnvState,
+        current_state: List[float],
         params: EnvParams,
-    ) -> EnvState:
-        # Denoramlize the action based on the bounds within param
-        x0 = (current_state.x0 + 1) * ((params.x0_bounds[1] - params.x0_bounds[0]) / 2) + params.x0_bounds[0]
-        x1 = (current_state.x1 + 1) * ((params.x1_bounds[1] - params.x1_bounds[0]) / 2) + params.x1_bounds[0]
-        x2 = (current_state.x2 + 1) * ((params.x2_bounds[1] - params.x2_bounds[0]) / 2) + params.x2_bounds[0]
-        x3 = (current_state.x3 + 1) * ((params.x3_bounds[1] - params.x3_bounds[0]) / 2) + params.x3_bounds[0]
-        x4 = (current_state.x4 + 1) * ((params.x4_bounds[1] - params.x4_bounds[0]) / 2) + params.x4_bounds[0]
-        x5 = (current_state.x5 + 1) * ((params.x5_bounds[1] - params.x5_bounds[0]) / 2) + params.x5_bounds[0]
-        x6 = (current_state.x6 + 1) * ((params.x6_bounds[1] - params.x6_bounds[0]) / 2) + params.x6_bounds[0]
-        x7 = (current_state.x7 + 1) * ((params.x7_bounds[1] - params.x7_bounds[0]) / 2) + params.x7_bounds[0]
-        x8 = (current_state.x8 + 1) * ((params.x8_bounds[1] - params.x8_bounds[0]) / 2) + params.x8_bounds[0]
-        x9 = (current_state.x9 + 1) * ((params.x9_bounds[1] - params.x9_bounds[0]) / 2) + params.x9_bounds[0]
-        x10 = (current_state.x10 + 1) * ((params.x10_bounds[1] - params.x10_bounds[0]) / 2) + params.x10_bounds[0]
-        x11 = (current_state.x11 + 1) * ((params.x11_bounds[1] - params.x11_bounds[0]) / 2) + params.x11_bounds[0]
-        x12 = (current_state.x12 + 1) * ((params.x12_bounds[1] - params.x12_bounds[0]) / 2) + params.x12_bounds[0]
-        x13 = (current_state.x13 + 1) * ((params.x13_bounds[1] - params.x13_bounds[0]) / 2) + params.x13_bounds[0]
-        x14 = (current_state.x14 + 1) * ((params.x14_bounds[1] - params.x14_bounds[0]) / 2) + params.x14_bounds[0]
-        x15 = (current_state.x15 + 1) * ((params.x15_bounds[1] - params.x15_bounds[0]) / 2) + params.x15_bounds[0]
-        return EnvState(
-            x0=x0,
-            x1=x1,
-            x2=x2,
-            x3=x3,
-            x4=x4,
-            x5=x5,
-            x6=x6,
-            x7=x7,
-            x8=x8,
-            x9=x9,
-            x10=x10,
-            x11=x11,
-            x12=x12,
-            x13=x13,
-            x14=x14,
-            x15=x15,
-            time=current_state.time,
-        )
+    ) -> List[float]:
+        # Denormalize the action based on the bounds within param
+        x0 = (current_state[0] + 1) * ((params.x0_bounds[1] - params.x0_bounds[0]) / 2) + params.x0_bounds[0]
+        x1 = (current_state[1] + 1) * ((params.x1_bounds[1] - params.x1_bounds[0]) / 2) + params.x1_bounds[0]
+        x2 = (current_state[2] + 1) * ((params.x2_bounds[1] - params.x2_bounds[0]) / 2) + params.x2_bounds[0]
+        x3 = (current_state[3] + 1) * ((params.x3_bounds[1] - params.x3_bounds[0]) / 2) + params.x3_bounds[0]
+        x4 = (current_state[4] + 1) * ((params.x4_bounds[1] - params.x4_bounds[0]) / 2) + params.x4_bounds[0]
+        x5 = (current_state[5] + 1) * ((params.x5_bounds[1] - params.x5_bounds[0]) / 2) + params.x5_bounds[0]
+        x6 = (current_state[6] + 1) * ((params.x6_bounds[1] - params.x6_bounds[0]) / 2) + params.x6_bounds[0]
+        x7 = (current_state[7] + 1) * ((params.x7_bounds[1] - params.x7_bounds[0]) / 2) + params.x7_bounds[0]
+        x8 = (current_state[8] + 1) * ((params.x8_bounds[1] - params.x8_bounds[0]) / 2) + params.x8_bounds[0]
+        x9 = (current_state[9] + 1) * ((params.x9_bounds[1] - params.x9_bounds[0]) / 2) + params.x9_bounds[0]
+        x10 = (current_state[10] + 1) * ((params.x10_bounds[1] - params.x10_bounds[0]) / 2) + params.x10_bounds[0]
+        x11 = (current_state[11] + 1) * ((params.x11_bounds[1] - params.x11_bounds[0]) / 2) + params.x11_bounds[0]
+        x12 = (current_state[12] + 1) * ((params.x12_bounds[1] - params.x12_bounds[0]) / 2) + params.x12_bounds[0]
+        x13 = (current_state[13] + 1) * ((params.x13_bounds[1] - params.x13_bounds[0]) / 2) + params.x13_bounds[0]
+        x14 = (current_state[14] + 1) * ((params.x14_bounds[1] - params.x14_bounds[0]) / 2) + params.x14_bounds[0]
+        x15 = (current_state[15] + 1) * ((params.x15_bounds[1] - params.x15_bounds[0]) / 2) + params.x15_bounds[0]
+        
+        return [x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15]
 
     def reward_compute_input(self, model_output: chex.Array, params: EnvParams) -> list:
         denormalize_params_min = jnp.array([
@@ -202,8 +186,10 @@ class TwoStageOTA(environment.Environment):
         return reward_input
     
     def compute_reward(self, model_output: chex.Array, params: EnvParams) -> float:
-        reward, self.rew_dict = compute_ota_reward(*(self.reward_compute_input(model_output, params)))
-        return reward
+        reward, reward_component = compute_ota_reward(*(self.reward_compute_input(model_output, params)))
+        return reward, reward_component
+
+
 
     def step_env(
         self,
@@ -218,7 +204,7 @@ class TwoStageOTA(environment.Environment):
         jax_state = self.get_obs(state)
 
         output = self.model.apply(self.model_params, jax_state)
-        reward = self.compute_reward(output, params)
+        reward, reward_component = self.compute_reward(output, params)
 
         # Update state
         next_state = EnvState(
@@ -247,7 +233,7 @@ class TwoStageOTA(environment.Environment):
             lax.stop_gradient(next_state),
             reward,
             done,
-            {},
+            reward_component,
         )
 
 
@@ -365,4 +351,4 @@ def compute_ota_reward(
 
     # Convert FoM to a reward
     reward = -1 * FoM
-    return reward
+    return reward, {}
