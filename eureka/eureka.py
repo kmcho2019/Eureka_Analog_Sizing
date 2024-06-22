@@ -70,14 +70,14 @@ def main(cfg):
 
     DUMMY_FAILURE = -10000.
     all_fitnesses = []
-    max_fitnesses = []
+    best_fitnesses = []
     max_successes = []
     max_successes_reward_correlation = []
     execute_rates = []
     best_code_paths = []
     max_success_overall = DUMMY_FAILURE
     max_success_reward_correlation_overall = DUMMY_FAILURE
-    max_fitness_overall = DUMMY_FAILURE
+    best_fitness_overall = DUMMY_FAILURE
     max_reward_code_path = None 
     print("Debug 0: Initial System and User Messages")
     # Eureka generation loop
@@ -367,10 +367,10 @@ def main(cfg):
         all_fitnesses.append(fitness_scores)
         # Select the best code sample based on the fitness score from hspice simulation#success rate
         #best_sample_idx = np.argmax(np.array(successes))
-        best_sample_idx = np.argmax(np.array(fitness_scores))
+        best_sample_idx = np.argmin(np.array(fitness_scores))
         best_content = contents[best_sample_idx]
         
-        max_fitness = fitness_scores[best_sample_idx]
+        best_fitness = fitness_scores[best_sample_idx]
         #max_success = successes[best_sample_idx]
         #max_success_reward_correlation = reward_correlations[best_sample_idx]
         #execute_rate = np.sum(np.array(successes) >= 0.) / cfg.sample
@@ -383,19 +383,19 @@ def main(cfg):
             max_reward_code_path = code_paths[best_sample_idx]
         '''
 
-        # Update the best Eureka Output based on Fitness Score
-        if max_fitness > max_fitness_overall:
-            max_fitness_overall = max_fitness
+        # Update the best Eureka Output based on Fitness Score (smaller is better)
+        if best_fitness < best_fitness_overall:
+            best_fitness_overall = best_fitness
             max_reward_code_path = code_paths[best_sample_idx]
         
-        max_fitnesses.append(max_fitness)
+        best_fitnesses.append(best_fitness)
 
         #execute_rates.append(execute_rate)
         #max_successes.append(max_success)
         #max_successes_reward_correlation.append(max_success_reward_correlation)
         best_code_paths.append(code_paths[best_sample_idx])
 
-        logging.info(f"Iteration {iter}: Max Fitness: {max_fitness}")
+        logging.info(f"Iteration {iter}: Best Fitness: {best_fitness}")
         #logging.info(f"Iteration {iter}: Max Success: {max_success}, Execute Rate: {execute_rate}, Max Success Reward Correlation: {max_success_reward_correlation}")
         logging.info(f"Iteration {iter}: Best Generation ID: {best_sample_idx}")
         logging.info(f"Iteration {iter}: GPT Output Content:\n" +  responses[best_sample_idx].message.content + "\n")
@@ -405,11 +405,11 @@ def main(cfg):
         fig, axs = plt.subplots(2, 1, figsize=(10, 10))
         fig.suptitle(f'{cfg.env.task}')
 
-        # First subplot: Max Fitness FoM
-        x_axis = np.arange(len(max_fitnesses))
+        # First subplot: Best Fitness FoM
+        x_axis = np.arange(len(best_fitnesses))
 
-        axs[0].plot(x_axis, np.array(max_fitnesses))
-        axs[0].set_title("Max Fitness")
+        axs[0].plot(x_axis, np.array(best_fitnesses))
+        axs[0].set_title("Best Fitness (smaller FoM is better)")
         axs[0].set_xlabel("Iteration")
 
         # Second subplot: Scatter plot with minimum values highlighted and connected
@@ -435,7 +435,7 @@ def main(cfg):
         fig.tight_layout(rect=[0, 0, 1, 0.96])
         #fig.tight_layout(pad=3.0)
         plt.savefig('summary.png')
-        np.savez('summary.npz', max_fitnesses=max_fitnesses, execute_rates=execute_rates, best_code_paths=best_code_paths, max_successes_reward_correlation=max_successes_reward_correlation)
+        np.savez('summary.npz', best_fitnesses=best_fitnesses, execute_rates=execute_rates, best_code_paths=best_code_paths, max_successes_reward_correlation=max_successes_reward_correlation)
 
 
 
@@ -457,7 +457,8 @@ def main(cfg):
         logging.info("Please double check the output env_iter*_response*.txt files for repeating errors!")
         exit()
     
-    logging.info(f"Task: {task}, Max Fitness Score(FoM) {max_fitness_overall}, Best Reward Code Path: {max_reward_code_path}")
+    logging.info(f"Task: {task}, All Fitness Scores(FoM) {all_fitnesses}")
+    logging.info(f"Task: {task}, Best Fitness Score(FoM) {best_fitness_overall}, Best Reward Code Path: {max_reward_code_path}")
     #logging.info(f"Task: {task}, Max Training Success {max_success_overall}, Correlation {max_success_reward_correlation_overall}, Best Reward Code Path: {max_reward_code_path}")
     logging.info(f"Evaluating best reward code {cfg.num_eval} times")
     shutil.copy(max_reward_code_path, output_file)
