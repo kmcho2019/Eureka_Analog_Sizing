@@ -161,7 +161,7 @@ def FoM(Measure_out, weights, constraints):
 	#print(len_Measure_out) ### 9
 	#print(len(Measure_out_t))
 	#tf.print("Measure_out in FoM");tf.print(Measure_out);
-	Measure_out = np.array(Measure_out, dtype=np.float32)
+	Measure_out = np.array(Measure_out, dtype=np.float64)
 	#print("tf.shape(Measure_out) in FoM: "); print(tf.shape(Measure_out))
 	accum = np.zeros(1) #accum = tf.zeros([len_Measure_out,1])
 
